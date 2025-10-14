@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 11:53:12 by brturcio          #+#    #+#             */
-/*   Updated: 2025/10/14 12:07:55 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/10/14 13:12:39 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int main(void)
 {
-	printf("esto es un test\n");
-
+	printf("This is a test\n");
 	return (0);
 }

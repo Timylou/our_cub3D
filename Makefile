@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		:= cube3D
+NAME 		:= cub3D
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror -g
 
@@ -19,11 +19,12 @@ DIR_OBJS	:= objs
 DIR_LIBFT	:= libraries/libft
 DIR_MLX		:= libraries/minilibx-linux
 
-SRCS := $(wildcard $(DIR_SRCS)/*.c)
-OBJS := $(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
+# SRCS := $(wildcard $(DIR_SRCS)/*.c)
+# OBJS := $(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
 
-# SRCS		:= $(DIR_SRCS)/main.c
-# OBJS		:= $(DIR_OBJS)/main.o
+SRCS := main.c file.c parse.c error.c init.c
+OBJS := $(SRCS:.c=.o)
+OBJS := $(addprefix $(DIR_OBJS)/, $(OBJS))
 
 LIBFT		:= $(DIR_LIBFT)/libft.a
 MLX_LIB		:= $(DIR_MLX)/libmlx.a

@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*   By: yel-mens <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 11:53:12 by brturcio          #+#    #+#             */
-/*   Updated: 2025/10/14 19:23:58 by brturcio         ###   ########.fr       */
+/*   Created: 2025/10/14 20:59:57 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/10/14 20:59:58 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "cub3D.h"
 
-static int	ft_argc(void)
-{
-	ft_putstr_fd("./cub3D path_to_map\n", STDERR_FILENO);
-	return (EXIT_FAILURE);
-}
 
-int	main(int argc, char **argv)
+t_game	*ft_parse(char *map_name)
 {
 	t_game	*game;
+	int		fd;
 
-	if (argc != 2)
-		return (ft_argc());
-	game = ft_parse(argv[1]);
-	ft_free_all(game);
-	return (0);
+	game = NULL;
+	fd = ft_open_file(map_name, ".cub", game);
+	game = ft_init_game();
+	return (game);
 }

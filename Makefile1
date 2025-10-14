@@ -1,38 +1,39 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
+#    Makefile1                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
-#    Updated: 2025/10/14 20:25:57 by brturcio         ###   ########.fr        #
+#    Updated: 2025/10/14 20:09:16 by brturcio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		:= cube3D
-CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -g
+NAME        := cube3D
+CC          := cc
+CFLAGS      := -Wall -Wextra -Werror -g
 
-DIR_SRCS	:= sources
-DIR_OBJS	:= objs
-DIR_LIBFT	:= libraries/libft
-DIR_MLX		:= libraries/minilibx-linux
+DIR_SRCS    := sources
+DIR_OBJS    := objs
+DIR_LIBFT   := libraries/libft
+DIR_MLX     := libraries/minilibx-linux
 
-SRCS := $(wildcard $(DIR_SRCS)/*.c)
-OBJS := $(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
+# Sources / Objects
+SRCS        := $(wildcard $(DIR_SRCS)/*.c)
+OBJS        := $(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
 
-# SRCS		:= $(DIR_SRCS)/main.c
-# OBJS		:= $(DIR_OBJS)/main.o
+# Libs
+LIBFT       := $(DIR_LIBFT)/libft.a
+MLX_LIB     := $(DIR_MLX)/libmlx.a
 
-LIBFT		:= $(DIR_LIBFT)/libft.a
-MLX_LIB		:= $(DIR_MLX)/libmlx.a
+# Includes (nota: en minilibx-linux el mlx.h está en la raíz del repo)
+INCLUDES    := -I$(DIR_LIBFT)/inc -I$(DIR_MLX) -Iincludes
 
-INCLUDES	:= -I$(DIR_LIBFT)/inc -I$(DIR_MLX) -Iincludes
+# Link flags para minilibx-linux (X11)
+MLX_FLAGS   := -L$(DIR_MLX) -lmlx -lXext -lX11 -lm -lz
 
-MLX_FLAGS	:= -L$(DIR_MLX) -lmlx -lXext -lX11 -lm -lz
-
-all : $(LIBFT) $(MLX_LIB) $(NAME)
+all: $(LIBFT) $(MLX_LIB) $(NAME)
 
 $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c
 	@mkdir -p $(dir $@)
@@ -43,33 +44,31 @@ $(NAME): $(OBJS)
 	@echo "✅ Compilation completed: $(NAME)"
 
 $(LIBFT):
-	@if [ ! -f $@ ] ; then \
+	@if [ ! -f $@ ]; then \
 		$(MAKE) -s -C $(DIR_LIBFT); \
 	fi
 
 $(MLX_LIB):
 	@if [ ! -f $@ ]; then \
-		$(MAKE) -s -C $(DIR_MLX) > /dev/null 2>&1; \
-		echo "✅ Library created : MLX"; \
+		$(MAKE) -s -C $(DIR_MLX); \
+		echo "✅ Library created : libmlx.a"; \
 	fi
 
-clean :
+clean:
 	@rm -rf $(DIR_OBJS)
 	@$(MAKE) -s -C $(DIR_LIBFT) clean
-	@$(MAKE) -s -C $(DIR_MLX) clean >/dev/null 2>&1 || true
+	@$(MAKE) -s -C $(DIR_MLX) clean || true
 	@echo "✅ clean done."
 
-fclean : clean
+fclean: clean
 	@rm -f $(NAME)
 	@$(MAKE) -s -C $(DIR_LIBFT) fclean
 	@echo "✅ fclean done."
 
-re : fclean all
+re: fclean all
 
-norm	:
+norm:
 	@norminette includes/
 	@norminette $(SRCS)
 
-.PHONY : all clean fclean re  norm
-
-
+.PHONY: all clean fclean re norm

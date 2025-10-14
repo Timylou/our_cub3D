@@ -6,13 +6,13 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 11:53:12 by brturcio          #+#    #+#             */
-/*   Updated: 2025/10/14 13:12:39 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/10/14 19:23:58 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int main(void)
+int	main(void)
 {
 	printf("This is a test\n");
 	return (0);

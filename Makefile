@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
+#    By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
-#    Updated: 2025/10/14 20:25:57 by brturcio         ###   ########.fr        #
+#    Updated: 2025/10/17 10:01:24 by yel-mens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,7 @@ DIR_OBJS	:= objs
 DIR_LIBFT	:= libraries/libft
 DIR_MLX		:= libraries/minilibx-linux
 
-# SRCS := $(wildcard $(DIR_SRCS)/*.c)
-# OBJS := $(SRCS:$(DIR_SRCS)/%.c=$(DIR_OBJS)/%.o)
-
-SRCS := main.c file.c parse.c error.c init.c
+SRCS := main.c file.c parse.c error.c init.c header.c image.c
 OBJS := $(SRCS:.c=.o)
 OBJS := $(addprefix $(DIR_OBJS)/, $(OBJS))
 

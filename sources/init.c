@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:52:36 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/14 21:52:38 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/16 14:59:31 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ t_game  *ft_init_game(void)
 	if (!game)
 		ft_error("game malloc error\n", game);
 	ft_init_mlx_win(game);
-	return (game);	
+	return (game);
 }

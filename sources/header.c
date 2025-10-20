@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:03:12 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/17 15:38:17 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/17 21:24:38 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ static void	ft_check_id(char **split_line, int fd, t_game *game)
 	if (split_line[2])
 		ft_free_split_gnl("Too much argument in .cub\n", split_line, fd, game);
 	id = split_line[0];
-	if (id[0] == 'N' && id[1] == 'O')
+	if (id[0] == 'N' && id[1] == 'O' && !id[2])
 		return ;
-	else if (id[0] == 'S' && id[1] == 'O')
+	else if (id[0] == 'S' && id[1] == 'O' && !id[2])
 		return ;
-	else if (id[0] == 'W' && id[1] == 'E')
+	else if (id[0] == 'W' && id[1] == 'E' && !id[2])
 		return ;
-	else if (id[0] == 'E' && id[1] == 'A')
+	else if (id[0] == 'E' && id[1] == 'A' && !id[2])
 		return ;
-	else if (id[0] == 'F' || id [0] == 'C')
+	else if ((id[0] == 'F' || id [0] == 'C') && !id[1])
 		return ;
 	ft_free_split_gnl("Identifier error in the .cub\n", split_line, fd, game);
 }
@@ -72,7 +72,11 @@ static void	ft_rgb_str_to_hex(char *rgb, char **split, int fd, t_game *game)
 
 	parts = ft_split(rgb, ',');
 	if (!parts || !parts[0] || !parts[1] || !parts[2] || parts[3])
+	{
+		if (parts)
+			ft_free_split(parts);
 		ft_free_split_gnl("Incorrect RGB syntax\n", split, fd, game);
+	}
 	r = ft_atoi(parts[0]);
 	g = ft_atoi(parts[1]);
 	b = ft_atoi(parts[2]);
@@ -85,19 +89,10 @@ static void	ft_rgb_str_to_hex(char *rgb, char **split, int fd, t_game *game)
 		game->ceiling_color = (r << 16) | (g << 8) | b;
 }
 
-static int	ft_handle_line(char *line, int fd, t_game *game)
+static int	ft_handle_line(char **split_line, int fd, t_game *game)
 {
-	char	**split_line;
 	t_img	*img;
 
-	split_line = ft_split(line, ' ');
-	free(line);
-	if (!split_line || !split_line[0])
-	{
-		if (split_line)
-			free(split_line);
-		return (0);
-	}
 	ft_check_id(split_line, fd, game);
 	if (ft_strlen(split_line[0]) == 2)
 	{
@@ -119,19 +114,31 @@ static int	ft_handle_line(char *line, int fd, t_game *game)
 	return (1);
 }
 
-void	ft_open_header(int fd, t_game *game)
+int	ft_open_header(int fd, t_game *game)
 {
 	int		index;
 	char	*line;
+	char	**split_line;
 
 	index = 0;
 	line = get_next_line(fd);
-	while (line)
+	while (line && index != 6)
 	{
 		if (line[0])
-			index += ft_handle_line(line, fd, game);
-		if (index == 6)
-			break ;
-		line = get_next_line(fd);
+		{
+			split_line = ft_split(line, ' ');
+			free(line);
+			if (!split_line || !split_line[0] || split_line[0][0] == '\n')
+			{
+				if (split_line)
+					ft_free_split(split_line);
+				line = get_next_line(fd);
+				continue ;
+			}
+			index += ft_handle_line(split_line, fd, game);
+		}
+		if (index != 6)
+			line = get_next_line(fd);
 	}
+	return (index);
 }

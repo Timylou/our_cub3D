@@ -17,9 +17,9 @@ static void	ft_check_id(char **split_line, int fd, t_game *game)
 	char	*id;
 
 	if (!split_line[1])
-		ft_free_split_gnl("Too few argument in .cub\n", split_line, fd, game);
+		ft_free_split_gnl("Too few argument : header\n", split_line, fd, game);
 	if (split_line[2])
-		ft_free_split_gnl("Too much argument in .cub\n", split_line, fd, game);
+		ft_free_split_gnl("Too much argument: header\n", split_line, fd, game);
 	id = split_line[0];
 	if (id[0] == 'N' && id[1] == 'O' && !id[2])
 		return ;
@@ -38,27 +38,27 @@ static int	ft_switch_img(char *id, t_img *img, t_game *game)
 {
 	if (id[0] == 'N' && id[1] == 'O')
 	{
-		if (game->NO_img)
+		if (game->no_img)
 			return (0);
-		game->NO_img = img;
+		game->no_img = img;
 	}
 	else if (id[0] == 'S' && id[1] == 'O')
 	{
-		if (game->SO_img)
+		if (game->so_img)
 			return (0);
-		game->SO_img = img;
+		game->so_img = img;
 	}
 	else if (id[0] == 'W' && id[1] == 'E')
 	{
-		if (game->WE_img)
+		if (game->we_img)
 			return (0);
-		game->WE_img = img;
+		game->we_img = img;
 	}
 	else if (id[0] == 'E' && id[1] == 'A')
 	{
-		if (game->EA_img)
+		if (game->ea_img)
 			return (0);
-		game->EA_img = img;
+		game->ea_img = img;
 	}
 	return (1);
 }

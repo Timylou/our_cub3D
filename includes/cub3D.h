@@ -32,7 +32,22 @@
 *  structs *
 * * * * * **/
 
-typedef struct	s_img
+typedef struct t_player
+{
+	float	x;
+	float	y;
+	float	angle;
+
+	bool	key_up;
+	bool	key_down;
+	bool	key_left;
+	bool	key_right;
+
+	bool	left_rotate;
+	bool	right_rotate;
+}				t_player;
+
+typedef struct s_img
 {
 	void	*img;
 	char	*data;
@@ -45,18 +60,21 @@ typedef struct	s_img
 	int		y;
 }				t_img;
 
-typedef struct	s_game
+typedef struct s_game
 {
-    void	*mlx;
-    void	*win;
-    int		width;
-    int		height;
+	void	*mlx;
+	void	*win;
+	int		w_width;
+	int		w_height;
+	char	**map;
+	int		m_width;
+	int		m_height;
 	int		floor_color;
 	int		ceiling_color;
-	t_img	*NO_img;
-	t_img	*SO_img;
-	t_img	*WE_img;
-	t_img	*EA_img;
+	t_img	*no_img;
+	t_img	*so_img;
+	t_img	*we_img;
+	t_img	*ea_img;
 }				t_game;
 
 /* * * * *
@@ -71,6 +89,7 @@ t_game	*ft_parse(char *map_name);
 int		ft_open_file(char *filename, char *suffix, t_game *game);
 int		ft_open_header(int fd, t_game *game);
 void	ft_open_map(int fd, t_game *game);
+void	ft_handle_lst(t_list *lst, int width, int height, t_game *game);
 
 /* * * * * * 
 *  image *
@@ -80,7 +99,6 @@ void	ft_put_pixel(t_img *img, int x, int y, int color);
 void	ft_put_image(t_img *img, int x_offset, int y_offset, t_img *buffer);
 t_img	*ft_open_image(void *mlx, char *name, int width, int height);
 
-
 /* * * * * * * * * 
 * errors/free *
 * * * * * * * * **/
@@ -89,5 +107,6 @@ void	ft_free_all(t_game *game);
 void	ft_free_split_gnl(char *msg, char **split_line, int fd, t_game *game);
 void	ft_free_split(char **split_line);
 void	ft_free_image(t_img *img, t_game *game);
+void	ft_free_map(t_game *game);
 
 #endif

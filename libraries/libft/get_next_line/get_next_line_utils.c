@@ -23,7 +23,7 @@ char	*ft_free_stash(char **stash, char **buffer, int res)
 	return (*stash);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2, int res)
+char	*ft_strjoin_gnl(char const *s1, char const *s2, int res)
 {
 	char	*str;
 	int		len_s1;
@@ -70,7 +70,7 @@ char	*ft_select(const char *str)
 	return (selected);
 }
 
-char	*ft_strchr(const char *str)
+char	*ft_strchr_gnl(const char *str)
 {
 	while (*str)
 	{
@@ -81,7 +81,7 @@ char	*ft_strchr(const char *str)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *str)
+char	*ft_strdup_gnl(const char *str)
 {
 	int		len_str;
 	int		i;

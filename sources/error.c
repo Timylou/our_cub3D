@@ -14,17 +14,17 @@
 
 static void	ft_free_imgs(t_game *game)
 {
-	if (game->NO_img)
-		ft_free_image(game->NO_img, game);
-	if (game->SO_img)
-		ft_free_image(game->SO_img, game);
-	if (game->WE_img)
-		ft_free_image(game->WE_img, game);
-	if (game->EA_img)
-		ft_free_image(game->EA_img, game);
+	if (game->no_img)
+		ft_free_image(game->no_img, game);
+	if (game->so_img)
+		ft_free_image(game->so_img, game);
+	if (game->we_img)
+		ft_free_image(game->we_img, game);
+	if (game->ea_img)
+		ft_free_image(game->ea_img, game);
 }
 
-static void ft_free_mlx_win(t_game *game)
+static void	ft_free_mlx_win(t_game *game)
 {
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
@@ -35,16 +35,17 @@ static void ft_free_mlx_win(t_game *game)
 	}
 }
 
-void    ft_free_all(t_game *game)
+void	ft_free_all(t_game *game)
 {
 	if (!game)
 		return ;
+	ft_free_map(game);
 	ft_free_imgs(game);
 	ft_free_mlx_win(game);
 	free(game);
 }
 
-void    ft_error(char *msg, t_game *game)
+void	ft_error(char *msg, t_game *game)
 {
 	ft_putstr_fd("Error\n", STDERR_FILENO);
 	ft_putstr_fd(msg, STDERR_FILENO);

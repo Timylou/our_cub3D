@@ -23,12 +23,12 @@ char	*get_next_line(int fd)
 	while (res > 0 || stash)
 	{
 		temp = stash;
-		stash = ft_strjoin(temp, buffer, res);
+		stash = ft_strjoin_gnl(temp, buffer, res);
 		free(temp);
 		free(buffer);
 		if (!stash)
 			return (NULL);
-		if (!ft_strchr(stash) && res > 0)
+		if (!ft_strchr_gnl(stash) && res > 0)
 		{
 			res = ft_read(fd, &buffer, &stash);
 			continue ;

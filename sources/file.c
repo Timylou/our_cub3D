@@ -33,16 +33,16 @@ static void	ft_check_name(char *name, char *suffix, t_game *game)
 	ft_error("The map must be a .cub and textures a .xpm\n", game);
 }
 
-int ft_open_file(char *filename, char *suffix, t_game *game)
+int	ft_open_file(char *filename, char *suffix, t_game *game)
 {
-    int fd;
+	int	fd;
 
-    ft_check_name(filename, suffix, game);
-    fd = open(filename, O_RDONLY);
-    if (fd < 0)
-    {
-        ft_putstr_fd(filename, STDERR_FILENO);
-        ft_error(" : file not found\n", game);
-    }
-    return (fd);
+	ft_check_name(filename, suffix, game);
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd(filename, STDERR_FILENO);
+		ft_error(" : file not found\n", game);
+	}
+	return (fd);
 }

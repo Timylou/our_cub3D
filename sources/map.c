@@ -26,7 +26,7 @@ static void	ft_free_gnl_error(char *msg, int fd, t_game *game)
 	ft_error(msg, game);
 }
 
-static char *ft_skip_blank(int fd, t_game *game)
+static char	*ft_skip_blank(int fd, t_game *game)
 {
 	char	*line;
 
@@ -60,14 +60,6 @@ static void	ft_check_line(char *line, int fd, t_list *lst, t_game *game)
 	}
 }
 
-static void	ft_handle_lst(t_list *lst, int width, int height, t_game *game)
-{
-	(void) lst;
-	(void) width;
-	(void) height;
-	(void) game;
-}
-
 void	ft_open_map(int fd, t_game *game)
 {
 	char	*line;
@@ -79,7 +71,7 @@ void	ft_open_map(int fd, t_game *game)
 	width = 0;
 	height = 0;
 	line = ft_skip_blank(fd, game);
-	while(line)
+	while (line)
 	{
 		if ((int) ft_strlen(line) > width)
 			width = ft_strlen(line);
@@ -90,5 +82,16 @@ void	ft_open_map(int fd, t_game *game)
 	}
 	close(fd);
 	ft_handle_lst(lst, width, height, game);
-	ft_lstclear(&lst, free);
+}
+
+void	ft_free_map(t_game *game)
+{
+	int	i;
+
+	if (!game->map)
+		return ;
+	i = 0;
+	while (i < game->m_height)
+		free(game->map[i++]);
+	free(game->map);
 }

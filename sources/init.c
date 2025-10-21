@@ -20,18 +20,18 @@ static void	ft_init_mlx_win(t_game *game)
 	mlx = mlx_init();
 	if (!mlx)
 		ft_error("mlx init error\n", game);
-	game->width = 1600;
-	game->height = 900;
-	win = mlx_new_window(mlx, game->width, game->height, "cub3D");
+	game->w_width = 1600;
+	game->w_height = 900;
+	win = mlx_new_window(mlx, game->w_width, game->w_height, "cub3D");
 	if (!win)
 		ft_error("mlx window init error\n", game);
 	game->mlx = mlx;
 	game->win = win;
 }
 
-t_game  *ft_init_game(void)
+t_game	*ft_init_game(void)
 {
-	t_game  *game;
+	t_game	*game;
 
 	game = ft_calloc(1, sizeof(t_game));
 	if (!game)

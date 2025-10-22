@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop.c                                             :+:      :+:    :+:   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 20:40:38 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/23 00:22:39 by yel-mens         ###   ########.fr       */
+/*   Created: 2025/10/23 00:15:10 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/10/23 00:26:56 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	ft_loop(t_game *game)
+void	ft_raycast(t_game *game)
 {
-	ft_move_player(game->player, game);
-	ft_clear_frame(game);
-	ft_draw_map(game);
-	ft_draw_player(game->player->x, game->player->y, 2, game);
-	ft_raycast(game);
-	mlx_put_image_to_window(game->mlx, game->win, game->frame->img, 0, 0);
-	return (1);
+	float	fraction;
+	float	start_x;
+	int		i;
+
+	fraction = PI / 3 / game->w_width;
+	start_x = game->player->angle - PI / 6;
+	i = 0;
+	while (i < game->w_width)
+	{
+		ft_draw_line(game->player, start_x, i, game);
+		start_x += fraction;
+		i++;
+	}
 }

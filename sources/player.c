@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:31:27 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 22:52:32 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/23 00:36:52 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,10 @@ static void	ft_check_movement(t_player *player, int ex_x, int ex_y, t_game *g)
 
 	x = player->x;
 	y = player->y;
-	if (y < 0 || y > g->m_height || x < 0 || x > g->m_width)
-	{
-		player->x = ex_x;
+	if (y < 0 || y > g->m_height)
 		player->y = ex_y;
-	}
+	if (x < 0 || x > g->m_width)
+		player->x = ex_x;
 	else if (g->map[y][x] == '1')
 	{
 		player->x = ex_x;

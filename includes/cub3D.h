@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:01:30 by brturcio          #+#    #+#             */
-/*   Updated: 2025/10/22 22:40:18 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/23 00:21:16 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,12 @@ void	ft_move_player(t_player *player, t_game *game);
 void	ft_draw_square(int x, int y, int size, t_game *game);
 void	ft_draw_player(int x, int y, int size, t_game *game);
 void	ft_draw_map(t_game *game);
+void	ft_draw_line(t_player *player, float start_x, int i, t_game *game);
+
+/* * * * * *
+* Raycast *
+* * * * * **/
+void	ft_raycast(t_game *game);
 
 /* * * * * 
 * loop *

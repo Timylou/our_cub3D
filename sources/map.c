@@ -6,24 +6,25 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:11:11 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/19 17:54:51 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/22 23:01:10 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static void	ft_free_gnl_error(char *msg, int fd, t_game *game)
+static int	ft_switch_angle(char angle, int player_x, char *line, t_game *game)
 {
-	char	*line;
-
-	line = get_next_line(fd);
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	ft_error(msg, game);
+	line[player_x] = '0';
+	if (angle == 'N')
+		game->player->angle = PI + PI / 2;
+	else if (angle == 'E')
+		game->player->angle = 0;
+	else if (angle == 'S')
+		game->player->angle = PI / 2;
+	else if (angle == 'W')
+		game->player->angle = 2 * PI;
+	game->player->x = player_x;
+	return (player_x);
 }
 
 static char	*ft_skip_blank(int fd, t_game *game)
@@ -41,11 +42,13 @@ static char	*ft_skip_blank(int fd, t_game *game)
 	return (line);
 }
 
-static void	ft_check_line(char *line, int fd, t_list *lst, t_game *game)
+static int	ft_check_line(char *line, int fd, t_list *lst, t_game *game)
 {
 	int		i;
+	int		player_x;
 	char	c;
 
+	player_x = -1;
 	i = 0;
 	while (line[i])
 	{
@@ -56,8 +59,16 @@ static void	ft_check_line(char *line, int fd, t_list *lst, t_game *game)
 			ft_lstclear(&lst, free);
 			ft_free_gnl_error("Wrong character in map\n", fd, game);
 		}
+		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+			player_x = ft_switch_angle(c, i, line, game);
 		i++;
 	}
+	if (player_x >= 0 && game->player->y >= 0)
+	{
+		ft_lstclear(&lst, free);
+		ft_free_gnl_error("Player have 2 positions\n", fd, game);
+	}
+	return (player_x);
 }
 
 void	ft_open_map(int fd, t_game *game)
@@ -77,11 +88,13 @@ void	ft_open_map(int fd, t_game *game)
 			width = ft_strlen(line);
 		height++;
 		ft_lstadd_back(&lst, ft_lstnew(line));
-		ft_check_line(line, fd, lst, game);
+		if (ft_check_line(line, fd, lst, game) >= 0)
+			game->player->y = height - 1;
 		line = get_next_line(fd);
 	}
 	close(fd);
 	ft_handle_lst(lst, width, height, game);
+	ft_flood_fill(game);
 }
 
 void	ft_free_map(t_game *game)

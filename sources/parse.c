@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 20:59:57 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/18 13:10:45 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:01:13 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ void	ft_free_split_gnl(char *msg, char **split_line, int fd, t_game *game)
 
 	if (split_line)
 		ft_free_split(split_line);
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	ft_error(msg, game);
+}
+
+void	ft_free_gnl_error(char *msg, int fd, t_game *game)
+{
+	char	*line;
+
 	line = get_next_line(fd);
 	while (line)
 	{

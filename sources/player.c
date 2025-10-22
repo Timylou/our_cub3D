@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:31:27 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/23 00:36:52 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/23 01:01:18 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_free_player(t_game *game)
 
 static void	ft_angle_player(t_player *player)
 {
-	float	angle_speed = 0.03;
+	float	angle_speed = 0.5;
 
 	if (player->left_rotate)
 		player->angle -= angle_speed;

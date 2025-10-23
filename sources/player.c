@@ -6,18 +6,11 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:31:27 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/23 01:01:18 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:05:46 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-void	ft_free_player(t_game *game)
-{
-	if (!game->player)
-		return ;
-	free(game->player);
-}
 
 static void	ft_angle_player(t_player *player)
 {
@@ -33,7 +26,7 @@ static void	ft_angle_player(t_player *player)
 		player->angle = 2 * PI;
 }
 
-static void	ft_position_player(t_player *player, int speed)
+static void	ft_position_player(t_player *player, float speed)
 {
 	float	cos_angle;
 	float	sin_angle;
@@ -62,40 +55,62 @@ static void	ft_position_player(t_player *player, int speed)
     }
 }
 
-static void	ft_check_movement(t_player *player, int ex_x, int ex_y, t_game *g)
+static int	ft_check_offmap(t_player *player, int ex_x, int ex_y, t_game *g)
 {
 	int	x;
 	int	y;
+	int	off_map;
 
+	off_map = 0;
 	x = player->x;
 	y = player->y;
 	if (y < 0 || y > g->m_height)
+	{
 		player->y = ex_y;
+		off_map = 1;
+	}
 	if (x < 0 || x > g->m_width)
-		player->x = ex_x;
-	else if (g->map[y][x] == '1')
 	{
 		player->x = ex_x;
-		player->y = ex_y;
+		off_map = 1;
 	}
+	return (off_map);
 }
 
-static void	ft_movement_player(t_player *player, int speed, t_game *game)
+static void	ft_check_movement(t_player *p, float ex_x, float ex_y, t_game *g)
 {
-	int	ex_x;
-	int	ex_y;
+	int	blocked_x;
+	int	blocked_y;
+	
+	if (ft_check_offmap(p, ex_x, ex_y, g))
+		return ;
+	if (g->map[(int)p->y][(int)p->x] == '1')
+	{
+		blocked_x = (g->map[(int)p->y][(int)ex_x] == '1');
+		blocked_y = (g->map[(int)ex_y][(int)p->x] == '1');
 
-	ex_x = player->x;
-	ex_y = player->y;
-	ft_position_player(player, speed);
-	ft_check_movement(player, ex_x, ex_y, game);
+		if (blocked_x && blocked_y)
+		{
+			p->x = ex_x;
+			p->y = ex_y;
+		}
+		else if (!blocked_x)
+			p->x = ex_x;
+		else if (!blocked_y)
+			p->y = ex_y;
+	}
 }
 
 void	ft_move_player(t_player *player, t_game *game)
 {
-	int	speed;
+	float	ex_x;
+	float	ex_y;
+	float	speed;
 
-	speed = 1;
+	speed = 0.5;
 	ft_angle_player(player);
-	ft_movement_player(player, speed, game);
+	ex_x = player->x;
+	ex_y = player->y;
+	ft_position_player(player, speed);
+	ft_check_movement(player, ex_x, ex_y, game);
 }

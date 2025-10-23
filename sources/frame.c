@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 19:44:17 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 20:04:59 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:08:13 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@ void	ft_clear_frame(t_game *game)
 	{
 		x = 0;
 		while (x < game->w_width)
-			ft_put_pixel(game->frame, x++, y, 0x000000);
+		{
+			if (y < game->w_height / 2)
+				ft_put_pixel(game->frame, x, y, game->ceiling_color);
+			else
+				ft_put_pixel(game->frame, x, y, game->floor_color);
+			x++;
+		}
 		y++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:45:45 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 19:59:31 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/23 12:00:21 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ static void	ft_free_mlx_win(t_game *game)
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
 	}
+}
+
+static void	ft_free_player(t_game *game)
+{
+	if (!game->player)
+		return ;
+	free(game->player);
 }
 
 void	ft_free_all(t_game *game)

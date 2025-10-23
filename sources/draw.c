@@ -6,7 +6,7 @@
 /*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:00:35 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/23 00:35:44 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:27:18 by yel-mens         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	ft_draw_square(int x, int y, int size, t_game *game)
 	}
 }
 
-void	ft_draw_player(int x, int y, int size, t_game *game)
+void	ft_draw_player(float x, float y, int size, t_game *game)
 {
 	int	color;
 	int	i;
 
-	x = x * BLOCK + BLOCK / 2;
-	y = y * BLOCK + BLOCK / 2;
+	x = x * BLOCK;
+	y = y * BLOCK;
 	color = 0xFF0000;
 	i = 0;
 	while (i < size)
@@ -62,7 +62,7 @@ void	ft_draw_line(t_player *player, float start_x, int i, t_game *game)
 	ray_y = player->y;
 	while (game->map[(int) ray_y][(int) ray_x] != '1')
 	{
-		ft_put_pixel(game->frame, ray_x * BLOCK + BLOCK / 2, ray_y * BLOCK + BLOCK / 2, 0xFF0000);
+		ft_put_pixel(game->frame, ray_x * BLOCK, ray_y * BLOCK, 0xFF0000);
 		ray_x += cos_angle / 10;
 		ray_y += sin_angle / 10;
 	}

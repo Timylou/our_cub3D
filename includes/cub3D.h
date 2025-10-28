@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:01:30 by brturcio          #+#    #+#             */
-/*   Updated: 2025/10/23 12:00:30 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/28 13:40:47 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,22 @@ typedef enum e_direction
 	RIGHT,
 	LEFT
 }			t_direction;
+
+typedef enum e_texture_direction
+{
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST
+}	t_texture_direction;
+
+typedef struct s_ray
+{
+	float	camara_x;
+	float	ray_dir_x;
+	float	ray_dir_y;
+
+}	t_ray;
 
 typedef struct t_player
 {
@@ -105,7 +121,7 @@ void	ft_open_map(int fd, t_game *game);
 void	ft_handle_lst(t_list *lst, int width, int height, t_game *game);
 void	ft_flood_fill(t_game *game);
 
-/* * * * * * 
+/* * * * * *
 *  image *
 * * * * * **/
 int		ft_get_pixel(t_img *img, int x, int y);
@@ -120,7 +136,7 @@ void	ft_clear_frame(t_game *game);
 int		ft_handle_input(int keysym, t_game *game);
 int		ft_handle_release(int keysym, t_game *game);
 
-/* * * * * * 
+/* * * * * *
 * player *
 * * * * * **/
 void	ft_move_player(t_player *player, t_game *game);
@@ -138,12 +154,12 @@ void	ft_draw_line(t_player *player, float start_x, int i, t_game *game);
 * * * * * **/
 void	ft_raycast(t_game *game);
 
-/* * * * * 
+/* * * * *
 * loop *
 * * * * **/
 int		ft_loop(t_game *game);
 
-/* * * * * * * * * 
+/* * * * * * * * *
 * errors/free *
 * * * * * * * * **/
 void	ft_error(char *msg, t_game *game);

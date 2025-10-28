@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 20:07:39 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/23 01:00:44 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/28 11:13:28 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	ft_handle_input(int keysym, t_game *game)
 		game->player->key_down = 1;
 	else if (keysym == XK_d)
 		game->player->key_right = 1;
-	else if (keysym == XK_Left || keysym == XK_k)
+	else if (keysym == XK_Left)
 		game->player->left_rotate = 1;
-	else if (keysym == XK_Right || keysym == XK_l)
+	else if (keysym == XK_Right)
 		game->player->right_rotate = 1;
 	return (1);
 }
@@ -44,9 +44,9 @@ int	ft_handle_release(int keysym, t_game *game)
 		game->player->key_down = 0;
 	else if (keysym == XK_d)
 		game->player->key_right = 0;
-	else if (keysym == XK_Left || keysym == XK_k)
+	else if (keysym == XK_Left)
 		game->player->left_rotate = 0;
-	else if (keysym == XK_Right || keysym == XK_l)
+	else if (keysym == XK_Right)
 		game->player->right_rotate = 0;
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:00:35 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/23 11:27:18 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/31 12:24:45 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	ft_draw_map(t_game *game)
 		{
 			if (game->map[y][x] == '1')
 				ft_draw_square(x * BLOCK, y * BLOCK, BLOCK, game);
+
 			x++;
 		}
 		y++;

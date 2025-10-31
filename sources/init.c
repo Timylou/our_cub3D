@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:52:36 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 20:00:56 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/10/29 20:11:10 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ static void	ft_init_player(t_game *game)
 	player->x = -1;
 	player->y = -1;
 	player->angle = 0;
+	player->dir_x = 0;
+	player->dir_y = 0;
+	player->plane_x = 0;
+	player->plane_y = 0;
 	player->key_up = 0;
 	player->key_down = 0;
 	player->key_left = 0;

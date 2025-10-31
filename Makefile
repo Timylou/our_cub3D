@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+         #
+#    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
-#    Updated: 2025/10/23 00:21:29 by yel-mens         ###   ########.fr        #
+#    Updated: 2025/10/31 14:23:51 by brturcio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ DIR_OBJS	:= objs
 DIR_LIBFT	:= libraries/libft
 DIR_MLX		:= libraries/minilibx-linux
 
-SRCS := main.c file.c parse.c error.c init.c header.c image.c map.c list.c flood_fill.c player.c frame.c input.c loop.c draw.c raycasting.c
+SRCS := main.c file.c parse.c error.c init.c header.c image.c map.c list.c flood_fill.c player.c frame.c input.c loop.c draw.c raycasting.c draw_texture.c proyection.c
 OBJS := $(SRCS:.c=.o)
 OBJS := $(addprefix $(DIR_OBJS)/, $(OBJS))
 

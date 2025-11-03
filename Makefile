@@ -6,39 +6,64 @@
 #    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
-#    Updated: 2025/10/31 14:23:51 by brturcio         ###   ########.fr        #
+#    Updated: 2025/11/03 12:17:44 by brturcio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		:= cub3D
-CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -g
+NAME 			:= cub3D
+NAME_BONUS		:= cub3D_bonus
+CC				:= cc
+CFLAGS			:= -Wall -Wextra -Werror -g
 
-DIR_SRCS	:= sources
-DIR_OBJS	:= objs
-DIR_LIBFT	:= libraries/libft
-DIR_MLX		:= libraries/minilibx-linux
+DIR_BONUS_SRCS	:= sources/bonus
+DIR_SRCS		:= sources/mandatory
+DIR_OBJS		:= objs
+DIR_LIBFT		:= libraries/libft
+DIR_MLX			:= libraries/minilibx-linux
 
-SRCS := main.c file.c parse.c error.c init.c header.c image.c map.c list.c flood_fill.c player.c frame.c input.c loop.c draw.c raycasting.c draw_texture.c proyection.c
-OBJS := $(SRCS:.c=.o)
-OBJS := $(addprefix $(DIR_OBJS)/, $(OBJS))
+SRCS :=			main.c file.c parse.c error.c init.c header.c \
+				image.c map.c list.c flood_fill.c player.c \
+				frame.c input.c loop.c draw.c raycasting.c \
+				draw_texture.c proyection.c
 
-LIBFT		:= $(DIR_LIBFT)/libft.a
-MLX_LIB		:= $(DIR_MLX)/libmlx.a
+BONUS_SRCS :=	main_bonus.c file_bonus.c parse_bonus.c error_bonus.c init_bonus.c header_bonus.c \
+				image_bonus.c map_bonus.c list_bonus.c flood_fill_bonus.c player_bonus.c \
+				frame_bonus.c input_bonus.c loop_bonus.c draw_bonus.c raycasting_bonus.c \
+				draw_texture_bonus.c proyection_bonus.c
 
-INCLUDES	:= -I$(DIR_LIBFT)/inc -I$(DIR_MLX) -Iincludes
+OBJS :=			$(SRCS:.c=.o)
+OBJS :=			$(addprefix $(DIR_OBJS)/, $(OBJS))
 
-MLX_FLAGS	:= -L$(DIR_MLX) -lmlx -lXext -lX11 -lm -lz
+BONUS_OBJS :=	$(BONUS_SRCS:.c=.o)
+BONUS_OBJS :=	$(addprefix $(DIR_OBJS)/, $(BONUS_OBJS))
+
+LIBFT			:= $(DIR_LIBFT)/libft.a
+MLX_LIB			:= $(DIR_MLX)/libmlx.a
+
+INCLUDES		:= -I$(DIR_LIBFT)/inc -I$(DIR_MLX) -Iincludes
+
+MLX_FLAGS		:= -L$(DIR_MLX) -lmlx -lXext -lX11 -lm -lz
+
 
 all : $(LIBFT) $(MLX_LIB) $(NAME)
 
+bonus : $(LIBFT) $(MLX_LIB) $(NAME_BONUS)
+
 $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(DIR_OBJS)/%_bonus.o: $(DIR_BONUS_SRCS)/%_bonus.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $@
 	@echo "✅ Compilation completed: $(NAME)"
+
+$(NAME_BONUS): $(BONUS_OBJS)
+	@$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBFT) $(MLX_FLAGS) -o $@
+	@echo "✅ Compilation completed: $(NAME_BONUS)"
 
 $(LIBFT):
 	@if [ ! -f $@ ] ; then \
@@ -59,15 +84,19 @@ clean :
 
 fclean : clean
 	@rm -f $(NAME)
+	@rm -f $(NAME_BONUS)
 	@$(MAKE) -s -C $(DIR_LIBFT) fclean
 	@echo "✅ fclean done."
 
 re : fclean all
 
+rebonus : fclean bonus
+
 norm	:
 	@norminette includes/
 	@norminette $(SRCS)
+	@norminette $(BONUS_SRCS)
 
-.PHONY : all clean fclean re  norm
+.PHONY : all clean fclean re rebonus norm bonus
 
 

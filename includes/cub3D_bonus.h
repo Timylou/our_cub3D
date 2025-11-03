@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub4D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 12:01:30 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/01 13:16:16 by brturcio         ###   ########.fr       */
+/*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/01 13:15:34 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include <sys/stat.h>
 # include <fcntl.h>
@@ -43,6 +44,14 @@ typedef enum e_direction
 	RIGHT,
 	LEFT
 }			t_direction;
+
+typedef enum e_texture_direction
+{
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST
+}	t_texture_direction;
 
 typedef struct s_img t_img;
 

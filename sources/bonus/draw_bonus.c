@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:00:35 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/31 12:24:45 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:06:03 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	ft_draw_map(t_game *game)
 		{
 			if (game->map[y][x] == '1')
 				ft_draw_square(x * BLOCK, y * BLOCK, BLOCK, game);
-
 			x++;
 		}
 		y++;

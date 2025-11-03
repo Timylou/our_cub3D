@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycasting2.c                                      :+:      :+:    :+:   */
+/*   proyection.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 13:11:26 by brturcio          #+#    #+#             */
-/*   Updated: 2025/10/31 13:14:12 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:07:57 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ void	ft_struct_inict(t_ray *r)
 
 double	my_abs(double n)
 {
-	return ((n < 0) ? -n : n);
+	if (n < 0)
+		return (-n);
+	return (n);
 }
-
 
 void	ft_realistic_height(t_game *game, t_ray *r)
 {

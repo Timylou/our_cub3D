@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:31:27 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/31 09:51:01 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:04:41 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static void	ft_angle_player(t_player *player)
 {
-	double	angle_speed = 0.04;
+	double	angle_speed;
 
+	angle_speed = 0.02;
 	if (player->left_rotate)
 		player->angle -= angle_speed;
 	if (player->right_rotate)
@@ -34,25 +35,25 @@ static void	ft_position_player(t_player *player, float speed)
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	if (player->key_up)
-    {
-        player->x += cos_angle * speed;
-        player->y += sin_angle * speed;
-    }
-    if (player->key_down)
-    {
-        player->x -= cos_angle * speed;
-        player->y -= sin_angle * speed;
-    }
-    if (player->key_left)
-    {
-        player->x += sin_angle * speed;
-        player->y -= cos_angle * speed;
-    }
-    if (player->key_right)
-    {
-        player->x -= sin_angle * speed;
-        player->y += cos_angle * speed;
-    }
+	{
+		player->x += cos_angle * speed;
+		player->y += sin_angle * speed;
+	}
+	if (player->key_down)
+	{
+		player->x -= cos_angle * speed;
+		player->y -= sin_angle * speed;
+	}
+	if (player->key_left)
+	{
+		player->x += sin_angle * speed;
+		player->y -= cos_angle * speed;
+	}
+	if (player->key_right)
+	{
+		player->x -= sin_angle * speed;
+		player->y += cos_angle * speed;
+	}
 }
 
 static int	ft_check_offmap(t_player *player, int ex_x, int ex_y, t_game *g)
@@ -88,7 +89,6 @@ static void	ft_check_movement(t_player *p, float ex_x, float ex_y, t_game *g)
 	{
 		blocked_x = (g->map[(int)p->y][(int)ex_x] == '1');
 		blocked_y = (g->map[(int)ex_y][(int)p->x] == '1');
-
 		if (blocked_x && blocked_y)
 		{
 			p->x = ex_x;
@@ -107,7 +107,7 @@ void	ft_move_player(t_player *player, t_game *game)
 	double	ex_y;
 	double	speed;
 
-	speed = 0.04;
+	speed = 0.02;
 	ft_angle_player(player);
 	player->dir_x = cos(player->angle);
 	player->dir_y = sin(player->angle);

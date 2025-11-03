@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:43:51 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 16:47:17 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:09:29 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_free_copy(char **map, int height)
 	free(map);
 }
 
-static char **ft_copy_map(t_game *game)
+static char	**ft_copy_map(t_game *game)
 {
 	char	**map;
 	char	**map_copy;
@@ -31,7 +31,7 @@ static char **ft_copy_map(t_game *game)
 	map = game->map;
 	map_copy = malloc(sizeof(char *) * game->m_height);
 	if (!map_copy)
-		ft_error("Malloc Error\n", game);	
+		ft_error("Malloc Error\n", game);
 	i = 0;
 	while (i < game->m_height)
 	{

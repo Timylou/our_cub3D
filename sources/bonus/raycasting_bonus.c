@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:15:10 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/31 14:21:57 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/01 11:05:30 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_inict_sidedist(t_ray *r, t_player *player)
 		r->step_x = 1;
 		r->sidedist_x = (r->map_x + 1.0 - player->x) * r->deltadist_x;
 	}
-	if(r->ray_dir_y < 0)
+	if (r->ray_dir_y < 0)
 	{
 		r->step_y = -1;
 		r->sidedist_y = (player->y - r->map_y) * r->deltadist_y;
@@ -66,7 +66,7 @@ void	ft_inict_dda(t_game *game, t_ray *r)
 			r->map_y += r->step_y;
 			r->side = 1;
 		}
-		if (r->map_y < 0 || r->map_y >= game->m_height ||
+		if (r->map_y < 0 || r->map_y >= game->m_height || \
 			r->map_x < 0 || r->map_x >= game->m_width)
 			r->hit = 1;
 		else if (game->map[r->map_y][r->map_x] == '1')

@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:01:30 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/01 13:16:16 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/03 12:26:37 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef enum e_direction
 	LEFT
 }			t_direction;
 
-typedef struct s_img t_img;
+typedef struct s_img	t_img;
 
 typedef struct s_info
 {
@@ -59,7 +59,7 @@ typedef struct s_info
 
 	double	step;
 	double	t_pos;
-} t_info;
+}	t_info;
 
 typedef struct s_ray
 {
@@ -94,10 +94,10 @@ typedef struct t_player
 	float	y;
 	float	angle;
 
-	double dir_x;
-	double dir_y;
-	double plane_x;
-	double plane_y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
 
 	int		key_up;
 	int		key_down;
@@ -211,7 +211,6 @@ void	ft_free_image(t_img *img, t_game *game);
 void	ft_free_map(t_game *game);
 void	ft_free_gnl_error(char *msg, int fd, t_game *game);
 
-
 /* * * * * * * * *
 *  proyection.c  *
 * * * * * * * * **/
@@ -223,7 +222,5 @@ void	ft_realistic_height(t_game *game, t_ray *r);
 *  draw_texture.c *
 * * * * * * * * **/
 void	ft_draw_texture(t_game *game, t_ray *r, int i);
-
-
 
 #endif

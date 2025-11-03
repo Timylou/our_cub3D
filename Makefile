@@ -6,7 +6,7 @@
 #    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
-#    Updated: 2025/11/03 12:17:44 by brturcio         ###   ########.fr        #
+#    Updated: 2025/11/03 12:36:08 by brturcio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,10 +92,10 @@ re : fclean all
 
 rebonus : fclean bonus
 
-norm	:
+norm :
 	@norminette includes/
-	@norminette $(SRCS)
-	@norminette $(BONUS_SRCS)
+	@norminette $(DIR_SRCS)
+	@norminette $(DIR_BONUS_SRCS)
 
 .PHONY : all clean fclean re rebonus norm bonus
 

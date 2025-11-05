@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   error_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:45:45 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/23 12:00:21 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/11/04 12:28:13 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	ft_free_imgs(t_game *game)
 {
@@ -22,6 +22,16 @@ static void	ft_free_imgs(t_game *game)
 		ft_free_image(game->we_img, game);
 	if (game->ea_img)
 		ft_free_image(game->ea_img, game);
+	if (game->door_img)
+		ft_free_image(game->door_img, game);
+	if (game->sprite_1)
+		ft_free_image(game->sprite_1, game);
+	if (game->sprite_2)
+		ft_free_image(game->sprite_2, game);
+	if (game->sprite_3)
+		ft_free_image(game->sprite_3, game);
+	if (game->sprite_4)
+		ft_free_image(game->sprite_4, game);
 	if (game->frame)
 		ft_free_image(game->frame, game);
 }
@@ -50,6 +60,7 @@ void	ft_free_all(t_game *game)
 		return ;
 	ft_free_map(game);
 	ft_free_player(game);
+	ft_free_doors(game);
 	ft_free_imgs(game);
 	ft_free_mlx_win(game);
 	free(game);

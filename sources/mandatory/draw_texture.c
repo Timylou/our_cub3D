@@ -6,13 +6,34 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 13:14:32 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/01 11:01:20 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:52:25 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
+static t_img	*ft_select_texture(t_game *game, t_ray *r)
+{
+	t_img	*img;
+
+	if (r->side == 0)
+	{
+		if (r->step_x == -1)
+			img = game->we_img;
+		else
+			img = game->ea_img;
+	}
+	else
+	{
+		if (r->step_y == -1)
+			img = game->no_img;
+		else
+			img = game->so_img;
+	}
+	return (img);
+}
+
+static void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
 {
 	t->screen_y = r->draw_start;
 	while (t->screen_y <= r->draw_end)

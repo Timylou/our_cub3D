@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.c                                             :+:      :+:    :+:   */
+/*   list_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:44:37 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/20 13:44:40 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/11/04 12:16:29 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	ft_free_lst(char *msg, t_list *lst, t_game *game)
 {
@@ -54,6 +54,24 @@ static void	ft_free_lst_no_content(t_list *lst)
 	}
 }
 
+t_list	*ft_handle_lst_continue(t_game *game, t_list *tmp, int *i)
+{
+	int		x;
+	char	*line;
+	
+	line = (char *)tmp->content;
+	game->map[*i] = line;
+	x = 0;
+	while (line[x])
+	{
+		if (line[x] == 'D')
+			ft_is_door(game, x, *i);
+		x++;
+	}
+	(*i)++;
+	return (tmp->next);
+}
+
 void	ft_handle_lst(t_list *lst, int width, int height, t_game *game)
 {
 	t_list	*tmp;
@@ -73,10 +91,7 @@ void	ft_handle_lst(t_list *lst, int width, int height, t_game *game)
 	i = 0;
 	tmp = lst;
 	while (tmp)
-	{
-		game->map[i++] = (char *)tmp->content;
-		tmp = tmp->next;
-	}
+		tmp = ft_handle_lst_continue(game, tmp, &i);
 	game->m_width = width;
 	game->m_height = height;
 	ft_free_lst_no_content(lst);

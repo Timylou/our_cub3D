@@ -1,18 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_texture.c                                     :+:      :+:    :+:   */
+/*   draw_texture_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 13:14:32 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/01 11:01:20 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/05 15:09:22 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
-void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
+static t_img	*ft_select_texture(t_game *game, t_ray *r)
+{
+	t_img	*img;
+
+	if (game->map[r->map_y][r->map_x] == 'D')
+		return (game->door_img);
+	if (r->side == 0)
+	{
+		if (r->step_x == -1)
+			img = game->we_img;
+		else
+			img = game->ea_img;
+	}
+	else
+	{
+		if (r->step_y == -1)
+			img = game->no_img;
+		else
+			img = game->so_img;
+	}
+	return (img);
+}
+
+static void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
 {
 	t->screen_y = r->draw_start;
 	while (t->screen_y <= r->draw_end)
@@ -33,9 +56,16 @@ void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
 
 void	ft_draw_texture(t_game *game, t_ray *r, int i)
 {
+	t_door	*door;
 	t_info	t;
 
 	t.tex = ft_select_texture(game, r);
+	if (game->map[r->map_y][r->map_x] == 'D')
+	{
+		door = ft_get_door(game, r->map_x, r->map_y);
+		if (door && r->wall_x < door->progress)
+			return;
+	}
 	t.t_width = t.tex->width;
 	t.t_height = t.tex->height;
 	t.tex_x = (int)(r->wall_x * (double)t.t_width);

@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:01:30 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/03 12:26:37 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/05 12:27:32 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,16 +185,6 @@ void	ft_draw_player(float x, float y, int size, t_game *game);
 void	ft_draw_map(t_game *game);
 void	ft_draw_line(t_player *player, float start_x, int i, t_game *game);
 
-/* * * * * *
-* Raycast *
-* * * * * **/
-void	ft_inict_camara(t_game *game, t_ray *r, int x);
-void	ft_inict_sidedist(t_ray *r, t_player *player);
-void	ft_inict_sidedist(t_ray *r, t_player *player);
-void	ft_inict_dda(t_game *game, t_ray *r);
-t_img	*ft_select_texture(t_game *game, t_ray *r);
-void	ft_raycast(t_game *game);
-
 /* * * * *
 * loop *
 * * * * **/
@@ -214,7 +204,6 @@ void	ft_free_gnl_error(char *msg, int fd, t_game *game);
 /* * * * * * * * *
 *  proyection.c  *
 * * * * * * * * **/
-void	ft_struct_inict(t_ray *r);
 double	my_abs(double n);
 void	ft_realistic_height(t_game *game, t_ray *r);
 
@@ -222,5 +211,10 @@ void	ft_realistic_height(t_game *game, t_ray *r);
 *  draw_texture.c *
 * * * * * * * * **/
 void	ft_draw_texture(t_game *game, t_ray *r, int i);
+
+/* * * * * *
+* Raycast *
+* * * * * **/
+void	ft_raycast(t_game *game);
 
 #endif

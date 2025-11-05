@@ -6,13 +6,33 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:15:10 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/01 11:05:30 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:53:18 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-void	ft_inict_camara(t_game *game, t_ray *r, int x)
+static void	ft_struct_inict(t_ray *r)
+{
+	r->camara = 0;
+	r->ray_dir_x = 0;
+	r->ray_dir_y = 0;
+	r->map_x = 0;
+	r->map_y = 0;
+	r->step_x = 0;
+	r->step_y = 0;
+	r->sidedist_x = 0;
+	r->sidedist_y = 0;
+	r->deltadist_x = 0;
+	r->deltadist_y = 0;
+	r->side = 0;
+	r->hit = 0;
+	r->perp_dist = 0;
+	r->wall_x = 0;
+	r->line_height = 0;
+	r->draw_start = 0;
+	r->draw_end = 0;
+}
+static void	ft_inict_camara(t_game *game, t_ray *r, int x)
 {
 	t_player	*p;
 
@@ -26,7 +46,7 @@ void	ft_inict_camara(t_game *game, t_ray *r, int x)
 	r->deltadist_y = my_abs(1 / r->ray_dir_y);
 }
 
-void	ft_inict_sidedist(t_ray *r, t_player *player)
+static void	ft_inict_sidedist(t_ray *r, t_player *player)
 {
 	if (r->ray_dir_x < 0)
 	{
@@ -50,7 +70,7 @@ void	ft_inict_sidedist(t_ray *r, t_player *player)
 	}
 }
 
-void	ft_inict_dda(t_game *game, t_ray *r)
+static void	ft_inict_dda(t_game *game, t_ray *r)
 {
 	while (r->hit == 0)
 	{
@@ -72,27 +92,6 @@ void	ft_inict_dda(t_game *game, t_ray *r)
 		else if (game->map[r->map_y][r->map_x] == '1')
 			r->hit = 1;
 	}
-}
-
-t_img	*ft_select_texture(t_game *game, t_ray *r)
-{
-	t_img	*img;
-
-	if (r->side == 0)
-	{
-		if (r->step_x == -1)
-			img = game->we_img;
-		else
-			img = game->ea_img;
-	}
-	else
-	{
-		if (r->step_y == -1)
-			img = game->no_img;
-		else
-			img = game->so_img;
-	}
-	return (img);
 }
 
 void	ft_raycast(t_game *game)

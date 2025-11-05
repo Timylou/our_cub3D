@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.c                                           :+:      :+:    :+:   */
+/*   player_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:31:27 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/01 11:04:41 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/05 10:04:40 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	ft_angle_player(t_player *player)
 {
 	double	angle_speed;
 
-	angle_speed = 0.02;
+	angle_speed = 0.04;
 	if (player->left_rotate)
 		player->angle -= angle_speed;
 	if (player->right_rotate)
@@ -99,6 +99,7 @@ static void	ft_check_movement(t_player *p, float ex_x, float ex_y, t_game *g)
 		else if (!blocked_y)
 			p->y = ex_y;
 	}
+	ft_check_movement_continue(p, ex_x, ex_y, g);
 }
 
 void	ft_move_player(t_player *player, t_game *game)
@@ -107,7 +108,7 @@ void	ft_move_player(t_player *player, t_game *game)
 	double	ex_y;
 	double	speed;
 
-	speed = 0.02;
+	speed = 0.03;
 	ft_angle_player(player);
 	player->dir_x = cos(player->angle);
 	player->dir_y = sin(player->angle);

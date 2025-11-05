@@ -6,11 +6,11 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 20:40:38 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/03 12:36:30 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:05:32 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 void	ft_draw_line_2d(t_game *game)
 {
@@ -31,6 +31,14 @@ void	ft_draw_line_2d(t_game *game)
 
 int	ft_loop(t_game *game)
 {
+	if (game->player->key_action == 1 && game->player->can_interact == 1)
+	{
+		ft_door_status_check(game);
+		game->player->can_interact = 0;
+	}
+	if (game->player->key_action == 0)
+		game->player->can_interact = 1;
+	ft_update_doors(game);
 	ft_move_player(game->player, game);
 	ft_clear_frame(game);
 	ft_draw_player(game->player->x, game->player->y, 2, game);

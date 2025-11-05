@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   map_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:11:11 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 23:01:10 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/11/04 12:41:45 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static int	ft_switch_angle(char angle, int player_x, char *line, t_game *game)
 {
@@ -53,7 +53,7 @@ static int	ft_check_line(char *line, int fd, t_list *lst, t_game *game)
 	while (line[i])
 	{
 		c = line[i];
-		if (c != ' ' && c != '1' && c != '0'
+		if (c != ' ' && c != '1' && c != '0' && c != 'D' && c != 'A'
 			&& c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != '\n')
 		{
 			ft_lstclear(&lst, free);
@@ -94,6 +94,7 @@ void	ft_open_map(int fd, t_game *game)
 	}
 	close(fd);
 	ft_handle_lst(lst, width, height, game);
+	ft_validate_door(game);
 	ft_flood_fill(game);
 }
 

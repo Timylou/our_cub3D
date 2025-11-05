@@ -1,44 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   proyection.c                                       :+:      :+:    :+:   */
+/*   proyection_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 13:11:26 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/01 11:07:57 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:01:29 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
-
-void	ft_struct_inict(t_ray *r)
-{
-	r->camara = 0;
-	r->ray_dir_x = 0;
-	r->ray_dir_y = 0;
-	r->map_x = 0;
-	r->map_y = 0;
-	r->step_x = 0;
-	r->step_y = 0;
-	r->sidedist_x = 0;
-	r->sidedist_y = 0;
-	r->deltadist_x = 0;
-	r->deltadist_y = 0;
-	r->side = 0;
-	r->hit = 0;
-	r->perp_dist = 0;
-	r->wall_x = 0;
-	r->line_height = 0;
-	r->draw_start = 0;
-	r->draw_end = 0;
-}
+#include "cub3D_bonus.h"
 
 double	my_abs(double n)
 {
 	if (n < 0)
 		return (-n);
 	return (n);
+}
+
+int	ft_check_wall_door(t_game *game, t_ray *r)
+{
+	char	map_char;
+	t_door	*door;
+
+	map_char = game->map[r->map_y][r->map_x];
+	if (map_char == '1')
+		return (1);
+	else if (map_char == 'D')
+	{
+		door = ft_get_door(game, r->map_x, r->map_y);
+		if (!door || door->progress <= 0.9)
+			return (1);
+	}
+	return (0);
 }
 
 void	ft_realistic_height(t_game *game, t_ray *r)

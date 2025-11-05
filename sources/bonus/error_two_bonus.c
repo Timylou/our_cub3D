@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   frame_bonus.c                                      :+:      :+:    :+:   */
+/*   error_two_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 19:44:17 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/03 15:31:35 by brturcio         ###   ########.fr       */
+/*   Created: 2025/11/04 12:28:47 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/04 12:31:50 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-void	ft_clear_frame(t_game *game)
+void	ft_free_doors(t_game *game)
 {
-	int	x;
-	int	y;
+	t_list	*ptr;
+	t_list	*next;
 
-	y = 0;
-	while (y < game->w_height)
+	ptr = game->doors;
+	while (ptr)
 	{
-		x = 0;
-		while (x < game->w_width)
-		{
-			if (y < game->w_height / 2)
-				ft_put_pixel(game->frame, x, y, game->ceiling_color);
-			else
-				ft_put_pixel(game->frame, x, y, game->floor_color);
-			x++;
-		}
-		y++;
+		next = ptr->next;
+		if (ptr->content)
+			free(ptr->content);
+		free(ptr);
+		ptr = next;
 	}
+	game->doors = NULL;
 }

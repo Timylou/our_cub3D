@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   flood_fill.c                                       :+:      :+:    :+:   */
+/*   flood_fill_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:43:51 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/01 11:09:29 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/04 10:03:33 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	ft_free_copy(char **map, int height)
 {
@@ -54,7 +54,7 @@ static void	ft_rec_flood_fill(char **map, int x, int y, t_game *game)
 		ft_free_copy(map, game->m_height);
 		ft_error("Map not closed\n", game);
 	}
-	if (map[y][x] == '1' || map[y][x] == 'X')
+	if (map[y][x] == '1' || map[y][x] == 'X' || map[y][x] == 'D')
 		return ;
 	map[y][x] = 'X';
 	ft_rec_flood_fill(map, x + 1, y, game);

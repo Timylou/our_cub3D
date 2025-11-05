@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.c                                           :+:      :+:    :+:   */
+/*   header_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:03:12 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/17 21:24:38 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/11/03 18:52:32 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	ft_check_id(char **split_line, int fd, t_game *game)
 {
@@ -28,6 +28,8 @@ static void	ft_check_id(char **split_line, int fd, t_game *game)
 	else if (id[0] == 'W' && id[1] == 'E' && !id[2])
 		return ;
 	else if (id[0] == 'E' && id[1] == 'A' && !id[2])
+		return ;
+	else if (ft_check_id_continue(id))
 		return ;
 	else if ((id[0] == 'F' || id [0] == 'C') && !id[1])
 		return ;
@@ -60,7 +62,7 @@ static int	ft_switch_img(char *id, t_img *img, t_game *game)
 			return (0);
 		game->ea_img = img;
 	}
-	return (1);
+	return (ft_switch_img2(id, img, game));
 }
 
 static void	ft_rgb_str_to_hex(char *rgb, char **split, int fd, t_game *game)
@@ -122,7 +124,7 @@ int	ft_open_header(int fd, t_game *game)
 
 	index = 0;
 	line = get_next_line(fd);
-	while (line && index != 6)
+	while (line && index != 11)
 	{
 		if (line[0])
 		{
@@ -137,7 +139,7 @@ int	ft_open_header(int fd, t_game *game)
 			}
 			index += ft_handle_line(split_line, fd, game);
 		}
-		if (index != 6)
+		if (index != 11)
 			line = get_next_line(fd);
 	}
 	return (index);

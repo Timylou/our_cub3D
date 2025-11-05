@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   input_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 20:07:39 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/28 11:13:28 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/05 11:42:23 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 int	ft_handle_input(int keysym, t_game *game)
 {
@@ -31,6 +31,8 @@ int	ft_handle_input(int keysym, t_game *game)
 		game->player->left_rotate = 1;
 	else if (keysym == XK_Right)
 		game->player->right_rotate = 1;
+	else if (keysym == XK_space)
+		game->player->key_action = 1;
 	return (1);
 }
 
@@ -48,5 +50,7 @@ int	ft_handle_release(int keysym, t_game *game)
 		game->player->left_rotate = 0;
 	else if (keysym == XK_Right)
 		game->player->right_rotate = 0;
+	else if (keysym == XK_space)
+		game->player->key_action = 0;
 	return (1);
 }

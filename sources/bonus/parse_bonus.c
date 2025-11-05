@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 20:59:57 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 16:01:13 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/11/03 19:58:44 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 void	ft_free_split(char **split_line)
 {
@@ -60,8 +60,8 @@ t_game	*ft_parse(char *map_name)
 	game = NULL;
 	fd = ft_open_file(map_name, ".cub", game);
 	game = ft_init_game();
-	if (ft_open_header(fd, game) != 6)
-		ft_free_split_gnl("You need 6 IDs\n", ft_split("a a", ' '), fd, game);
+	if (ft_open_header(fd, game) != 11)
+		ft_free_split_gnl("You need 11 IDs\n", ft_split("a a", ' '), fd, game);
 	ft_open_map(fd, game);
 	return (game);
 }

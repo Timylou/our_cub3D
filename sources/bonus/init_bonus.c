@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:52:36 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/29 20:11:10 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/05 10:55:42 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3D_bonus.h"
 
 static void	ft_init_mlx_win(t_game *game)
 {
@@ -27,6 +27,8 @@ static void	ft_init_mlx_win(t_game *game)
 		ft_error("mlx window init error\n", game);
 	game->mlx = mlx;
 	game->win = win;
+	game->doors = NULL;
+	game->count_doors = 0;
 }
 
 static void	ft_init_player(t_game *game)
@@ -49,6 +51,8 @@ static void	ft_init_player(t_game *game)
 	player->key_right = 0;
 	player->left_rotate = 0;
 	player->right_rotate = 0;
+	player->key_action = 0;
+	player->can_interact = 1;
 	game->player = player;
 }
 

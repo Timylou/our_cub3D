@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/05 13:05:55 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/07 08:53:51 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,12 @@
 # include "get_next_line.h"
 # include "libft.h"
 
+# define FRAME_TIME (1000000 / 60)
 # define PI 3.14159265359
 # define BLOCK 10
 # define FOV_PLANE 0.66
-# define STATE_IDLE 0
-# define STATE_OPENING 1
-# define STATE_CLOSING -1
-# define DOOR_SPEED 0.05
+# define STATE_CLOSED 0
+# define STATE_OPEN 1
 
 /* * * * * *
 *  structs *
@@ -130,7 +129,6 @@ typedef struct s_img
 
 typedef struct s_door
 {
-	float	progress;
 	int		state;
 	int		x;
 	int		y;
@@ -172,7 +170,7 @@ void	ft_is_door(t_game *game, int x, int y);
 void	ft_validate_door(t_game *game);
 t_door	*ft_get_door(t_game *game, int x, int y);
 int		ft_check_wall_door(t_game *game, t_ray *r);
-void	ft_update_doors(t_game *game);
+
 
 /* * * * *
 * init *
@@ -253,4 +251,10 @@ void	ft_draw_texture(t_game *game, t_ray *r, int i);
 * Raycast *
 * * * * * **/
 void	ft_raycast(t_game *game);
+
+/* * * * * *
+*   time   *
+* * * * * **/
+int	ft_get_time(void);
+
 #endif

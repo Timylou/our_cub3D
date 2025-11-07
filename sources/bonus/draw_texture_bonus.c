@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 13:14:32 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/05 15:09:22 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/07 08:14:02 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,9 @@ static void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
 
 void	ft_draw_texture(t_game *game, t_ray *r, int i)
 {
-	t_door	*door;
 	t_info	t;
 
 	t.tex = ft_select_texture(game, r);
-	if (game->map[r->map_y][r->map_x] == 'D')
-	{
-		door = ft_get_door(game, r->map_x, r->map_y);
-		if (door && r->wall_x < door->progress)
-			return;
-	}
 	t.t_width = t.tex->width;
 	t.t_height = t.tex->height;
 	t.tex_x = (int)(r->wall_x * (double)t.t_width);

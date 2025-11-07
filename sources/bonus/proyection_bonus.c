@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 13:11:26 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/05 13:01:29 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/07 08:14:54 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_check_wall_door(t_game *game, t_ray *r)
 	else if (map_char == 'D')
 	{
 		door = ft_get_door(game, r->map_x, r->map_y);
-		if (!door || door->progress <= 0.9)
+		if (!door || door->state == STATE_CLOSED)
 			return (1);
 	}
 	return (0);

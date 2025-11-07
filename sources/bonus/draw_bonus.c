@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:00:35 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/03 15:31:10 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/07 10:36:52 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,23 @@ void	ft_draw_player(float x, float y, int size, t_game *game)
 	}
 }
 
+int	ft_is_wall_or_door(t_game *game, float ray_x, float ray_y)
+{
+	t_door	*door;
+
+	if (ray_y < 0 || ray_y >= game->m_height || ray_x < 0 || ray_x >= game->m_width)
+			return (1);
+		if (game->map[(int) ray_y][(int) ray_x] == '1')
+			return (1);
+		if (game->map[(int) ray_y][(int) ray_x] == 'D')
+		{
+			door = ft_get_door(game, (int)ray_x, (int)ray_y);
+			if (!door || door->state == STATE_CLOSED)
+				return (1) ;
+		}
+	return (0);
+}
+
 void	ft_draw_line(t_player *player, float start_x, int i, t_game *game)
 {
 	float	cos_angle;
@@ -60,8 +77,10 @@ void	ft_draw_line(t_player *player, float start_x, int i, t_game *game)
 	sin_angle = sin(start_x);
 	ray_x = player->x;
 	ray_y = player->y;
-	while (game->map[(int) ray_y][(int) ray_x] != '1')
+	while (1)
 	{
+		if (ft_is_wall_or_door(game, ray_x, ray_y))
+			break ;
 		ft_put_pixel(game->frame, ray_x * BLOCK, ray_y * BLOCK, 0xFF0000);
 		ray_x += cos_angle / 10;
 		ray_y += sin_angle / 10;

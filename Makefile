@@ -6,7 +6,7 @@
 #    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
-#    Updated: 2025/11/05 13:06:23 by brturcio         ###   ########.fr        #
+#    Updated: 2025/11/07 08:54:09 by brturcio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ BONUS_SRCS :=	main_bonus.c file_bonus.c parse_bonus.c error_bonus.c init_bonus.c
 				header_two_bonus.c image_bonus.c map_bonus.c list_bonus.c flood_fill_bonus.c player_bonus.c \
 				frame_bonus.c input_bonus.c loop_bonus.c draw_bonus.c raycasting_bonus.c \
 				draw_texture_bonus.c proyection_bonus.c add_door_bonus.c error_two_bonus.c player_two_bonus.c \
-				add_door_two_bonus.c
+				time_bonus.c
 
 OBJS :=			$(SRCS:.c=.o)
 OBJS :=			$(addprefix $(DIR_OBJS)/, $(OBJS))

@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 11:26:21 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/05 14:20:41 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/07 08:02:53 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,10 @@ void ft_door_status_check(t_game *game)
 		door = ft_get_door(game, map_x, map_y);
 		if (door)
 		{
-			if (door->state == STATE_OPENING)
-				door->state = STATE_CLOSING;
-			else if (door->state == STATE_CLOSING)
-				door->state = STATE_OPENING;
+			if (door->state == STATE_CLOSED)
+				door->state = STATE_OPEN;
 			else
-			{
-				if (door->progress < 0.5)
-					door->state = STATE_OPENING;
-				else
-					door->state = STATE_CLOSING;
-			}
+				door->state = STATE_CLOSED;
 		}
 	}
 }
@@ -63,8 +56,7 @@ void	ft_is_door(t_game *game, int x, int y)
 	door = malloc(sizeof(t_door));
 	if (!door)
 		ft_error("Malloc door failed", game);
-	door->progress = 0.0;
-	door->state = STATE_IDLE;
+	door->state = STATE_CLOSED;
 	door->x = x;
 	door->y = y;
 	ft_lstadd_back(&game->doors, ft_lstnew(door));

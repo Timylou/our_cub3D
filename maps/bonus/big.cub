@@ -1,7 +1,13 @@
-NO ./textures/wall.xpm
-SO ./textures/coin.xpm
-WE ./textures/ground.xpm
-EA ./textures/exit.xpm
+NO ./textures/north.xpm
+SO ./textures/south.xpm
+WE ./textures/west.xpm
+EA ./textures/east.xpm
+
+SD ./textures/door.xpm
+S1 ./textures/sprite_1.xpm
+S2 ./textures/sprite_2.xpm
+S3 ./textures/sprite_2.xpm
+S4 ./textures/sprite_4.xpm
 
 F 138,46,0
 C 0,0,50

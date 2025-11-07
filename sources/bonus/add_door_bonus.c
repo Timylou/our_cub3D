@@ -6,13 +6,13 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 11:26:21 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/07 08:02:53 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/07 13:04:49 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-void ft_door_status_check(t_game *game)
+void	ft_door_status_check(t_game *game)
 {
 	int		map_x;
 	int		map_y;

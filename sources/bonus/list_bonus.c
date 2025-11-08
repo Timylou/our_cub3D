@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:44:37 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/08 12:40:58 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 14:55:03 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ t_list	*ft_handle_lst_continue(t_game *game, t_list *tmp, int *i)
 	{
 		if (line[x] == 'D')
 			ft_is_door(game, x, *i);
+		else if (line[x] == 'A')
+		{
+			ft_init_sprite(game, x, *i);
+			line[x] = '0';
+		}
 		x++;
 	}
 	(*i)++;

@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:15:10 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/08 12:41:40 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 20:32:09 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	ft_raycast(t_game *game)
 		ft_inict_sidedist(&r, game->player);
 		ft_inict_dda(game, &r);
 		ft_realistic_height(game, &r);
+		game->z_buffer[i] = r.perp_dist;
 		ft_draw_texture(game, &r, i);
 		i++;
 	}

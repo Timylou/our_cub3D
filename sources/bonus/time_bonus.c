@@ -6,13 +6,13 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 08:41:48 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/08 12:43:09 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 16:53:30 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-static long long	get_time_in_usec(void)
+long long	get_time_in_usec(void)
 {
 	struct timeval	tv;
 

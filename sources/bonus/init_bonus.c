@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 21:52:36 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/05 10:55:42 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 16:07:17 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static void	ft_init_mlx_win(t_game *game)
 	game->win = win;
 	game->doors = NULL;
 	game->count_doors = 0;
+	game->sprites = NULL;
+	game->z_buffer = ft_calloc(game->w_width, sizeof(double));
+	if (!game->z_buffer)
+		ft_error("Malloc Z-Buffer failed", game);
 }
 
 static void	ft_init_player(t_game *game)

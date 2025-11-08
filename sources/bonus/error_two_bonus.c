@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 12:28:47 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/04 12:31:50 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 15:31:48 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,12 @@
 
 void	ft_free_doors(t_game *game)
 {
-	t_list	*ptr;
-	t_list	*next;
+	if (game->doors)
+		ft_lstclear(&game->doors, free);
+}
 
-	ptr = game->doors;
-	while (ptr)
-	{
-		next = ptr->next;
-		if (ptr->content)
-			free(ptr->content);
-		free(ptr);
-		ptr = next;
-	}
-	game->doors = NULL;
+void	ft_free_sprites(t_game *game)
+{
+	if (game->sprites)
+		ft_lstclear(&game->sprites, free);
 }

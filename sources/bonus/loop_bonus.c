@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 20:40:38 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/08 11:02:03 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 17:00:41 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	ft_loop(t_game *game)
 	ft_move_player(game->player, game);
 	ft_clear_frame(game);
 	ft_raycast(game);
+	ft_render_sprites(game);
 	ft_draw_minimap_background(game);
 	ft_draw_map(game);
 	ft_draw_line_2d(game);

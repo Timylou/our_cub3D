@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 13:59:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/08 12:21:42 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 17:58:03 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,31 @@ typedef enum e_direction
 
 typedef struct s_img	t_img;
 typedef struct s_game	t_game;
+
+typedef struct s_sprite
+{
+	double		x;
+	double		y;
+	double		dist;
+	int			anim_frame;
+	long long	last_anim_time;
+
+}	t_sprite;
+
+typedef struct s_sprite_draw
+{
+	t_game		*game;
+	t_img		*texture;
+	double		transform_x;
+	double		transform_y;
+	int			screen_x;
+	int			height;
+	int			width;
+	int			start_x;
+	int			end_x;
+	int			start_y;
+	int			end_y;
+}	t_sprite_draw;
 
 typedef struct s_minimap_data
 {
@@ -138,6 +163,8 @@ typedef struct s_game
 	t_ray		*ray;
 	t_info		*info;
 	t_list		*doors;
+	t_list		*sprites;
+	double		*z_buffer;
 }				t_game;
 
 #endif

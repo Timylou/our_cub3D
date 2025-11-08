@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 08:41:48 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/07 09:24:17 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:43:09 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static long long	get_time_in_usec(void)
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000000) + tv.tv_usec);
 }
+
 int	ft_get_time(void)
 {
 	static long long	last_time;
@@ -32,4 +33,3 @@ int	ft_get_time(void)
 	last_time = current_time;
 	return (1);
 }
-

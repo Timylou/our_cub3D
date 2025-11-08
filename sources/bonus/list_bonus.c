@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:44:37 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/04 12:16:29 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:40:58 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_list	*ft_handle_lst_continue(t_game *game, t_list *tmp, int *i)
 {
 	int		x;
 	char	*line;
-	
+
 	line = (char *)tmp->content;
 	game->map[*i] = line;
 	x = 0;

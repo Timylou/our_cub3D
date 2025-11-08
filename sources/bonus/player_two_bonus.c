@@ -6,13 +6,14 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 09:56:05 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/07 08:26:26 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:42:43 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-void	ft_check_movement_continue(t_player *p, float ex_x, float ex_y, t_game *g)
+void	ft_check_movement_continue(t_player *p, float ex_x,
+									float ex_y, t_game *g)
 {
 	t_door	*door;
 	int		blocked_x;
@@ -36,4 +37,3 @@ void	ft_check_movement_continue(t_player *p, float ex_x, float ex_y, t_game *g)
 			p->y = ex_y;
 	}
 }
-

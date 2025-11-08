@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 15:43:17 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/03 19:22:10 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:41:16 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	ft_switch_img3(char *id, t_img *img, t_game *game)
 	}
 	return (1);
 }
+
 int	ft_switch_img2(char *id, t_img *img, t_game *game)
 {
 	if (id[0] == 'S' && id[1] == 'D')

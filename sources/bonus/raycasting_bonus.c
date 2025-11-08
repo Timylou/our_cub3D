@@ -6,11 +6,12 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 00:15:10 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/05 09:19:01 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:41:40 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
+
 static void	ft_struct_inict(t_ray *r)
 {
 	r->camara = 0;
@@ -87,8 +88,8 @@ static void	ft_inict_dda(t_game *game, t_ray *r)
 			r->map_y += r->step_y;
 			r->side = 1;
 		}
-		if (r->map_y < 0 || r->map_y >= game->m_height || \
-			r->map_x < 0 || r->map_x >= game->m_width)
+		if (r->map_y < 0 || r->map_y >= game->m_height
+			|| r->map_x < 0 || r->map_x >= game->m_width)
 			r->hit = 1;
 		else if (ft_check_wall_door(game, r))
 			r->hit = 1;

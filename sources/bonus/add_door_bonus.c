@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 11:26:21 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/07 13:04:49 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:39:50 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,16 @@ void	ft_is_door(t_game *game, int x, int y)
 
 void	ft_valid_one_door(t_game *game, int x, int y)
 {
-	char	up;
-	char	down;
-	char	left;
-	char	right;
 	int		vertical;
 	int		horizontal;
 
 	if (x <= 0 || y <= 0 || x >= game->m_width - 1 || y >= game->m_height - 1)
 		ft_error("Door on the edge of the map\n", game);
-	up = game->map[y - 1][x];
-	down = game->map[y + 1][x];
-	left = game->map[y][x - 1];
-	right = game->map[y][x + 1];
-	if (up == ' ' || down == ' ' || left == ' ' || right == ' ')
+	if (game->map[y - 1][x] == ' ' || game->map[y + 1][x] == ' '
+			|| game->map[y][x - 1] == ' ' || game->map[y][x + 1] == ' ')
 		ft_error("Door adjacent to void/space\n", game);
-	vertical = (up == '1' && down == '1');
-	horizontal = (left == '1' && right == '1');
+	vertical = (game->map[y - 1][x] == '1' && game->map[y + 1][x] == '1');
+	horizontal = (game->map[y][x - 1] == '1' && game->map[y][x + 1] == '1');
 	if (!vertical && !horizontal)
 		ft_error("Door must be embedded between two walls\n", game);
 }

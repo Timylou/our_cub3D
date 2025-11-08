@@ -6,14 +6,14 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/07 14:01:18 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:23:46 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_BONUS_H
 # define CUB3D_BONUS_H
 
-# include "cub3D_struct_bonu.h"
+# include "cub3D_struct_bonus.h"
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -29,7 +29,7 @@
 # include "get_next_line.h"
 # include "libft.h"
 
-# define FRAME_TIME (1000000 / 60)
+# define FRAME_TIME 16666
 # define PI 3.14159265359
 # define BLOCK 10
 # define FOV_PLANE 0.66
@@ -37,7 +37,6 @@
 # define STATE_OPEN 1
 # define MINIMAP_SIZE 180
 # define MINIMAP_OFFSET 20
-
 
 void	ft_door_status_check(t_game *game);
 void	ft_is_door(t_game *game, int x, int y);

@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D_struct_bonu.h                                :+:      :+:    :+:   */
+/*   cub3D_struct_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 13:59:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/07 14:07:30 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/08 12:21:42 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_STRUCT_BONUS
-# define CUB3D_STRUCT_BONUS
+#ifndef CUB3D_STRUCT_BONUS_H
+# define CUB3D_STRUCT_BONUS_H
 
-# include "cub3D_bonus.h"
 # include "libft.h"
 
 typedef enum e_direction

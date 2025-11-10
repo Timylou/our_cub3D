@@ -1,0 +1,2452 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
+#    Updated: 2025/11/08 17:27:01 by brturcio         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME 			:= cub3D
+NAME_BONUS		:= cub3D_bonus
+CC				:= cc
+CFLAGS			:= -Wall -Wextra -Werror -g
+
+DIR_BONUS_SRCS	:= sources/bonus
+DIR_SRCS		:= sources/mandatory
+DIR_OBJS		:= objs
+DIR_LIBFT		:= libraries/libft
+DIR_MLX			:= libraries/minilibx-linux
+
+SRCS :=			main.c file.c parse.c error.c init.c header.c \
+				image.c map.c list.c flood_fill.c player.c \
+				frame.c input.c loop.c draw.c raycasting.c \
+				draw_texture.c proyection.c
+
+BONUS_SRCS :=	main_bonus.c file_bonus.c parse_bonus.c error_bonus.c init_bonus.c header_bonus.c \
+				header_two_bonus.c image_bonus.c map_bonus.c list_bonus.c flood_fill_bonus.c player_bonus.c \
+				frame_bonus.c input_bonus.c loop_bonus.c draw_bonus.c raycasting_bonus.c \
+				draw_texture_bonus.c proyection_bonus.c add_door_bonus.c error_two_bonus.c player_two_bonus.c \
+				time_bonus.c minimap_bonus.c sprites_bonus.c sprites_utils_bonus.c
+
+OBJS :=			$(SRCS:.c=.o)
+OBJS :=			$(addprefix $(DIR_OBJS)/, $(OBJS))
+
+BONUS_OBJS :=	$(BONUS_SRCS:.c=.o)
+BONUS_OBJS :=	$(addprefix $(DIR_OBJS)/, $(BONUS_OBJS))
+
+LIBFT			:= $(DIR_LIBFT)/libft.a
+MLX_LIB			:= $(DIR_MLX)/libmlx.a
+
+INCLUDES		:= -I$(DIR_LIBFT)/inc -I$(DIR_MLX) -Iincludes
+
+MLX_FLAGS		:= -L$(DIR_MLX) -lmlx -lXext -lX11 -lm -lz
+
+
+all : $(LIBFT) $(MLX_LIB) $(NAME)
+
+bonus : $(LIBFT) $(MLX_LIB) $(NAME_BONUS)
+
+$(DIR_OBJS)/%.o: $(DIR_SRCS)/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(DIR_OBJS)/%_bonus.o: $(DIR_BONUS_SRCS)/%_bonus.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $@
+	@echo "✅ Compilation completed: $(NAME)"
+
+$(NAME_BONUS): $(BONUS_OBJS)
+	@$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBFT) $(MLX_FLAGS) -o $@
+	@echo "✅ Compilation completed: $(NAME_BONUS)"
+
+$(LIBFT):
+	@if [ ! -f $@ ] ; then \
+		$(MAKE) -s -C $(DIR_LIBFT); \
+	fi
+
+$(MLX_LIB):
+	@if [ ! -f $@ ]; then \
+		$(MAKE) -s -C $(DIR_MLX) > /dev/null 2>&1; \
+		echo "✅ Library created : MLX"; \
+	fi
+
+clean :
+	@rm -rf $(DIR_OBJS)
+	@$(MAKE) -s -C $(DIR_LIBFT) clean
+	@$(MAKE) -s -C $(DIR_MLX) clean >/dev/null 2>&1 || true
+	@echo "✅ clean done."
+
+fclean : clean
+	@rm -f $(NAME)
+	@rm -f $(NAME_BONUS)
+	@$(MAKE) -s -C $(DIR_LIBFT) fclean
+	@echo "✅ fclean done."
+
+re : fclean all
+
+rebonus : fclean bonus
+
+norm :
+	@norminette includes
+	@norminette $(DIR_SRCS)
+	@norminette $(DIR_BONUS_SRCS)
+
+.PHONY : all clean fclean re rebonus norm bonus
+
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   add_door_bonus.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/04 11:26:21 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 12:39:50 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_door_status_check(t_game *game)
+{
+	int		map_x;
+	int		map_y;
+	t_door	*door;
+
+	map_x = (int)(game->player->x + game->player->dir_x);
+	map_y = (int)(game->player->y + game->player->dir_y);
+	if (game->map[map_y][map_x] == 'D')
+	{
+		door = ft_get_door(game, map_x, map_y);
+		if (door)
+		{
+			if (door->state == STATE_CLOSED)
+				door->state = STATE_OPEN;
+			else
+				door->state = STATE_CLOSED;
+		}
+	}
+}
+
+t_door	*ft_get_door(t_game *game, int x, int y)
+{
+	t_list	*node;
+	t_door	*door;
+
+	node = game->doors;
+	while (node)
+	{
+		door = (t_door *)node->content;
+		if (door->x == x && door->y == y)
+			return (door);
+		node = node->next;
+	}
+	return (NULL);
+}
+
+void	ft_is_door(t_game *game, int x, int y)
+{
+	t_door	*door;
+
+	door = malloc(sizeof(t_door));
+	if (!door)
+		ft_error("Malloc door failed", game);
+	door->state = STATE_CLOSED;
+	door->x = x;
+	door->y = y;
+	ft_lstadd_back(&game->doors, ft_lstnew(door));
+	game->count_doors++;
+}
+
+void	ft_valid_one_door(t_game *game, int x, int y)
+{
+	int		vertical;
+	int		horizontal;
+
+	if (x <= 0 || y <= 0 || x >= game->m_width - 1 || y >= game->m_height - 1)
+		ft_error("Door on the edge of the map\n", game);
+	if (game->map[y - 1][x] == ' ' || game->map[y + 1][x] == ' '
+			|| game->map[y][x - 1] == ' ' || game->map[y][x + 1] == ' ')
+		ft_error("Door adjacent to void/space\n", game);
+	vertical = (game->map[y - 1][x] == '1' && game->map[y + 1][x] == '1');
+	horizontal = (game->map[y][x - 1] == '1' && game->map[y][x + 1] == '1');
+	if (!vertical && !horizontal)
+		ft_error("Door must be embedded between two walls\n", game);
+}
+
+void	ft_validate_door(t_game *game)
+{
+	t_list	*node;
+	t_door	*d;
+
+	node = game->doors;
+	while (node)
+	{
+		d = (t_door *)node->content;
+		ft_valid_one_door(game, d->x, d->y);
+		node = node ->next;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 21:00:35 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/08 12:53:33 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_init_minimap_data(t_minimap_data *data, t_player *player,
+							float start_x, t_game *game)
+{
+	data->game = game;
+	data->ray_x = player->x;
+	data->ray_y = player->y;
+	data->player_screen_x = MINIMAP_OFFSET + (MINIMAP_SIZE / 2);
+	data->player_screen_y = MINIMAP_OFFSET + (MINIMAP_SIZE / 2);
+	data->cos_angle = cos(start_x);
+	data->sin_angle = sin(start_x);
+}
+
+void	ft_draw_player(float x, float y, int size, t_game *game)
+{
+	int	color;
+	int	i;
+
+	color = 0xFF0000;
+	i = 0;
+	while (i < size)
+	{
+		ft_put_pixel_minimap(game->frame, (int)x + i, (int)y, color);
+		ft_put_pixel_minimap(game->frame, (int)x, (int)y + i, color);
+		ft_put_pixel_minimap(game->frame, (int)x + size, (int)y + i, color);
+		ft_put_pixel_minimap(game->frame, (int)x + i, (int)y + size, color);
+		i++;
+	}
+}
+
+void	ft_draw_line(t_player *player, float start_x, int i, t_game *game)
+{
+	t_minimap_data	data;
+	int				screen_x;
+	int				screen_y;
+
+	(void) i;
+	ft_init_minimap_data(&data, player, start_x, game);
+	while (1)
+	{
+		if (ft_is_wall_or_door(game, data.ray_x, data.ray_y))
+			break ;
+		screen_x = data.player_screen_x
+			+ (int)((data.ray_x - game->player->x) * BLOCK);
+		screen_y = data.player_screen_y
+			+ (int)((data.ray_y - game->player->y) * BLOCK);
+		ft_put_pixel_minimap(game->frame, screen_x, screen_y, 0xFF0000);
+		data.ray_x += data.cos_angle / 10;
+		data.ray_y += data.sin_angle / 10;
+	}
+}
+
+static void	ft_draw_map_continue(t_game *game, int x, int y)
+{
+	int	screen_x;
+	int	screen_y;
+	int	player_screen_x;
+	int	player_screen_y;
+
+	player_screen_x = MINIMAP_OFFSET + (MINIMAP_SIZE / 2);
+	player_screen_y = MINIMAP_OFFSET + (MINIMAP_SIZE / 2);
+	screen_x = player_screen_x + (int)((x - game->player->x) * BLOCK);
+	screen_y = player_screen_y + (int)((y - game->player->y) * BLOCK);
+	ft_draw_square(screen_x, screen_y, BLOCK, game);
+}
+
+void	ft_draw_map(t_game *game)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < game->m_height)
+	{
+		x = 0;
+		while (x < game->m_width)
+		{
+			if (game->map[y][x] == '1')
+				ft_draw_map_continue(game, x, y);
+			x++;
+		}
+		y++;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 21:45:45 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/08 16:09:33 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_free_imgs(t_game *game)
+{
+	if (game->no_img)
+		ft_free_image(game->no_img, game);
+	if (game->so_img)
+		ft_free_image(game->so_img, game);
+	if (game->we_img)
+		ft_free_image(game->we_img, game);
+	if (game->ea_img)
+		ft_free_image(game->ea_img, game);
+	if (game->door_img)
+		ft_free_image(game->door_img, game);
+	if (game->sprite_1)
+		ft_free_image(game->sprite_1, game);
+	if (game->sprite_2)
+		ft_free_image(game->sprite_2, game);
+	if (game->sprite_3)
+		ft_free_image(game->sprite_3, game);
+	if (game->sprite_4)
+		ft_free_image(game->sprite_4, game);
+	if (game->frame)
+		ft_free_image(game->frame, game);
+}
+
+static void	ft_free_mlx_win(t_game *game)
+{
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+}
+
+static void	ft_free_player(t_game *game)
+{
+	if (!game->player)
+		return ;
+	free(game->player);
+}
+
+void	ft_free_all(t_game *game)
+{
+	if (!game)
+		return ;
+	ft_free_map(game);
+	ft_free_player(game);
+	ft_free_doors(game);
+	ft_free_sprites(game);
+	ft_free_imgs(game);
+	ft_free_mlx_win(game);
+	if (game->z_buffer)
+		free(game->z_buffer);
+	free(game);
+}
+
+void	ft_error(char *msg, t_game *game)
+{
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	ft_putstr_fd(msg, STDERR_FILENO);
+	if (game)
+		ft_free_all(game);
+	exit(EXIT_FAILURE);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 21:08:03 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/03 15:31:22 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_check_name(char *name, char *suffix, t_game *game)
+{
+	int		len;
+	char	s1;
+	char	s2;
+	char	s3;
+
+	len = 0;
+	while (name[len])
+		len++;
+	if (len < 4)
+		ft_error("Map name too short\n", game);
+	s1 = suffix[1];
+	s2 = suffix[2];
+	s3 = suffix[3];
+	if (name[len - 4] == '.' && name[len - 3] == s1 && name[len - 2] == s2
+		&& name[len - 1] == s3)
+		return ;
+	ft_error("The map must be a .cub and textures a .xpm\n", game);
+}
+
+int	ft_open_file(char *filename, char *suffix, t_game *game)
+{
+	int	fd;
+
+	ft_check_name(filename, suffix, game);
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd(filename, STDERR_FILENO);
+		ft_error(" : file not found\n", game);
+	}
+	return (fd);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flood_fill_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/20 16:43:51 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/04 10:03:33 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_free_copy(char **map, int height)
+{
+	int	i;
+
+	i = 0;
+	while (i < height)
+		free(map[i++]);
+	free(map);
+}
+
+static char	**ft_copy_map(t_game *game)
+{
+	char	**map;
+	char	**map_copy;
+	int		i;
+
+	map = game->map;
+	map_copy = malloc(sizeof(char *) * game->m_height);
+	if (!map_copy)
+		ft_error("Malloc Error\n", game);
+	i = 0;
+	while (i < game->m_height)
+	{
+		map_copy[i] = ft_strdup(map[i]);
+		if (!map_copy[i])
+		{
+			while (--i >= 0)
+				free(map_copy[i]);
+			ft_error("Malloc Error\n", game);
+		}
+		i++;
+	}
+	return (map_copy);
+}
+
+static void	ft_rec_flood_fill(char **map, int x, int y, t_game *game)
+{
+	if (y < 0 || y >= game->m_height || x < 0 || x >= game->m_width)
+	{
+		ft_free_copy(map, game->m_height);
+		ft_error("Map not closed\n", game);
+	}
+	if (map[y][x] == '1' || map[y][x] == 'X' || map[y][x] == 'D')
+		return ;
+	map[y][x] = 'X';
+	ft_rec_flood_fill(map, x + 1, y, game);
+	ft_rec_flood_fill(map, x - 1, y, game);
+	ft_rec_flood_fill(map, x, y + 1, game);
+	ft_rec_flood_fill(map, x, y - 1, game);
+}
+
+void	ft_flood_fill(t_game *game)
+{
+	char	**copy_map;
+
+	copy_map = ft_copy_map(game);
+	ft_rec_flood_fill(copy_map, game->player->x, game->player->y, game);
+	ft_free_copy(copy_map, game->m_height);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   frame_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 19:44:17 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/03 15:31:35 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_clear_frame(t_game *game)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < game->w_height)
+	{
+		x = 0;
+		while (x < game->w_width)
+		{
+			if (y < game->w_height / 2)
+				ft_put_pixel(game->frame, x, y, game->ceiling_color);
+			else
+				ft_put_pixel(game->frame, x, y, game->floor_color);
+			x++;
+		}
+		y++;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   header_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/17 10:03:12 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/03 18:52:32 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_check_id(char **split_line, int fd, t_game *game)
+{
+	char	*id;
+
+	if (!split_line[1])
+		ft_free_split_gnl("Too few argument : header\n", split_line, fd, game);
+	if (split_line[2])
+		ft_free_split_gnl("Too much argument: header\n", split_line, fd, game);
+	id = split_line[0];
+	if (id[0] == 'N' && id[1] == 'O' && !id[2])
+		return ;
+	else if (id[0] == 'S' && id[1] == 'O' && !id[2])
+		return ;
+	else if (id[0] == 'W' && id[1] == 'E' && !id[2])
+		return ;
+	else if (id[0] == 'E' && id[1] == 'A' && !id[2])
+		return ;
+	else if (ft_check_id_continue(id))
+		return ;
+	else if ((id[0] == 'F' || id [0] == 'C') && !id[1])
+		return ;
+	ft_free_split_gnl("Identifier error in the .cub\n", split_line, fd, game);
+}
+
+static int	ft_switch_img(char *id, t_img *img, t_game *game)
+{
+	if (id[0] == 'N' && id[1] == 'O')
+	{
+		if (game->no_img)
+			return (0);
+		game->no_img = img;
+	}
+	else if (id[0] == 'S' && id[1] == 'O')
+	{
+		if (game->so_img)
+			return (0);
+		game->so_img = img;
+	}
+	else if (id[0] == 'W' && id[1] == 'E')
+	{
+		if (game->we_img)
+			return (0);
+		game->we_img = img;
+	}
+	else if (id[0] == 'E' && id[1] == 'A')
+	{
+		if (game->ea_img)
+			return (0);
+		game->ea_img = img;
+	}
+	return (ft_switch_img2(id, img, game));
+}
+
+static void	ft_rgb_str_to_hex(char *rgb, char **split, int fd, t_game *game)
+{
+	char	**parts;
+	int		r;
+	int		g;
+	int		b;
+
+	parts = ft_split(rgb, ',');
+	if (!parts || !parts[0] || !parts[1] || !parts[2] || parts[3])
+	{
+		if (parts)
+			ft_free_split(parts);
+		ft_free_split_gnl("Incorrect RGB syntax\n", split, fd, game);
+	}
+	r = ft_atoi(parts[0]);
+	g = ft_atoi(parts[1]);
+	b = ft_atoi(parts[2]);
+	ft_free_split(parts);
+	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+		ft_free_split_gnl("Incorrect RGB code\n", split, fd, game);
+	if (split[0][0] == 'F')
+		game->floor_color = (r << 16) | (g << 8) | b;
+	else if (split[0][0] == 'C')
+		game->ceiling_color = (r << 16) | (g << 8) | b;
+}
+
+static int	ft_handle_line(char **split_line, int fd, t_game *game)
+{
+	t_img	*img;
+
+	ft_check_id(split_line, fd, game);
+	if (ft_strlen(split_line[0]) == 2)
+	{
+		split_line[1][ft_strlen(split_line[1]) - 1] = 0;
+		img = ft_open_image(game->mlx, split_line[1], 100, 100);
+		if (!img)
+			ft_free_split_gnl("Cannot open image\n", split_line, fd, game);
+		if (!ft_switch_img(split_line[0], img, game))
+		{
+			if (img->img)
+				free(img->img);
+			free(img);
+			ft_free_split_gnl("2 similar ID detected\n", split_line, fd, game);
+		}
+	}
+	else if (ft_strlen(split_line[0]) == 1)
+		ft_rgb_str_to_hex(split_line[1], split_line, fd, game);
+	ft_free_split(split_line);
+	return (1);
+}
+
+int	ft_open_header(int fd, t_game *game)
+{
+	int		index;
+	char	*line;
+	char	**split_line;
+
+	index = 0;
+	line = get_next_line(fd);
+	while (line && index != 11)
+	{
+		if (line[0])
+		{
+			split_line = ft_split(line, ' ');
+			free(line);
+			if (!split_line || !split_line[0] || split_line[0][0] == '\n')
+			{
+				if (split_line)
+					ft_free_split(split_line);
+				line = get_next_line(fd);
+				continue ;
+			}
+			index += ft_handle_line(split_line, fd, game);
+		}
+		if (index != 11)
+			line = get_next_line(fd);
+	}
+	return (index);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   image_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/03 13:59:44 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/03 15:31:39 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_free_image(t_img *img, t_game *game)
+{
+	if (!img)
+		return ;
+	if (img->img)
+		mlx_destroy_image(game->mlx, img->img);
+	free(img);
+}
+
+int	ft_get_pixel(t_img *img, int x, int y)
+{
+	int		pixel_pos;
+
+	if (!img)
+		return (-1);
+	pixel_pos = (y * img->size_line) + (x * (img->bpp / 8));
+	return (*(int *)(img->data + pixel_pos));
+}
+
+void	ft_put_pixel(t_img *img, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = img->data + ((y * img->size_line) + (x * (img->bpp / 8)));
+	*(unsigned int *)dst = color;
+}
+
+void	ft_put_image(t_img *img, int x_offset, int y_offset, t_img *frame)
+{
+	int	x;
+	int	y;
+	int	color;
+
+	if (!frame || !img)
+		return ;
+	y = 0;
+	while (y <= img->height)
+	{
+		x = 0;
+		while (x <= img->width)
+		{
+			color = ft_get_pixel(img, x, y);
+			if (color >= 0)
+				ft_put_pixel(frame, x + x_offset, y + y_offset, color);
+			x++;
+		}
+		y++;
+	}
+}
+
+t_img	*ft_open_image(void *mlx, char *name, int width, int height)
+{
+	t_img	*img;
+	void	*mlx_img;
+
+	img = malloc(sizeof(t_img));
+	if (!img)
+		return (NULL);
+	mlx_img = mlx_xpm_file_to_image(mlx, name, &width, &height);
+	if (!mlx_img)
+	{
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		perror(name);
+		free(img);
+		return (NULL);
+	}
+	img->width = width;
+	img->height = height;
+	img->img = mlx_img;
+	img->data = mlx_get_data_addr(mlx_img,
+			&img->bpp, &img->size_line, &img->edn);
+	img->x = 0;
+	img->y = 0;
+	return (img);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 21:52:36 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/08 16:07:17 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_init_mlx_win(t_game *game)
+{
+	void	*mlx;
+	void	*win;
+
+	mlx = mlx_init();
+	if (!mlx)
+		ft_error("mlx init error\n", game);
+	game->w_width = 1600;
+	game->w_height = 900;
+	win = mlx_new_window(mlx, game->w_width, game->w_height, "cub3D");
+	if (!win)
+		ft_error("mlx window init error\n", game);
+	game->mlx = mlx;
+	game->win = win;
+	game->doors = NULL;
+	game->count_doors = 0;
+	game->sprites = NULL;
+	game->z_buffer = ft_calloc(game->w_width, sizeof(double));
+	if (!game->z_buffer)
+		ft_error("Malloc Z-Buffer failed", game);
+}
+
+static void	ft_init_player(t_game *game)
+{
+	t_player	*player;
+
+	player = malloc(sizeof(t_player));
+	if (!player)
+		ft_error("Malloc Error\n", game);
+	player->x = -1;
+	player->y = -1;
+	player->angle = 0;
+	player->dir_x = 0;
+	player->dir_y = 0;
+	player->plane_x = 0;
+	player->plane_y = 0;
+	player->key_up = 0;
+	player->key_down = 0;
+	player->key_left = 0;
+	player->key_right = 0;
+	player->left_rotate = 0;
+	player->right_rotate = 0;
+	player->key_action = 0;
+	player->can_interact = 1;
+	game->player = player;
+}
+
+static void	ft_init_frame(t_game *game)
+{
+	int	width;
+	int	height;
+
+	game->frame = malloc(sizeof(t_img));
+	if (!game->frame)
+		ft_error("Malloc frame\n", game);
+	width = game->w_width;
+	height = game->w_height;
+	game->frame->img = mlx_new_image(game->mlx, width, height);
+	if (!game->frame->img)
+		ft_error("frame image init\n", game);
+	game->frame->data = mlx_get_data_addr(game->frame->img,
+			&game->frame->bpp, &game->frame->size_line, &game->frame->edn);
+	game->frame->width = game->w_width;
+	game->frame->height = game->w_height;
+}
+
+t_game	*ft_init_game(void)
+{
+	t_game	*game;
+
+	game = ft_calloc(1, sizeof(t_game));
+	if (!game)
+		ft_error("game malloc error\n", game);
+	ft_init_player(game);
+	ft_init_mlx_win(game);
+	ft_init_frame(game);
+	return (game);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 20:07:39 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/05 11:42:23 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+int	ft_handle_input(int keysym, t_game *game)
+{
+	if (keysym == XK_Escape)
+	{
+		mlx_loop_end(game->mlx);
+		return (1);
+	}
+	if (keysym == XK_w)
+		game->player->key_up = 1;
+	else if (keysym == XK_a)
+		game->player->key_left = 1;
+	else if (keysym == XK_s)
+		game->player->key_down = 1;
+	else if (keysym == XK_d)
+		game->player->key_right = 1;
+	else if (keysym == XK_Left)
+		game->player->left_rotate = 1;
+	else if (keysym == XK_Right)
+		game->player->right_rotate = 1;
+	else if (keysym == XK_space)
+		game->player->key_action = 1;
+	return (1);
+}
+
+int	ft_handle_release(int keysym, t_game *game)
+{
+	if (keysym == XK_w)
+		game->player->key_up = 0;
+	else if (keysym == XK_a)
+		game->player->key_left = 0;
+	else if (keysym == XK_s)
+		game->player->key_down = 0;
+	else if (keysym == XK_d)
+		game->player->key_right = 0;
+	else if (keysym == XK_Left)
+		game->player->left_rotate = 0;
+	else if (keysym == XK_Right)
+		game->player->right_rotate = 0;
+	else if (keysym == XK_space)
+		game->player->key_action = 0;
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/20 13:44:37 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/08 14:55:03 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_free_lst(char *msg, t_list *lst, t_game *game)
+{
+	ft_lstclear(&lst, free);
+	ft_error(msg, game);
+}
+
+static void	ft_check_width(t_list *tmp, int width, t_list *lst, t_game *game)
+{
+	int		i;
+	char	*new_line;
+	int		len;
+
+	len = ft_strlen(tmp->content);
+	if (len < 3)
+		ft_free_lst("A line is too short in the map\n", lst, game);
+	if (len == width)
+		return ;
+	new_line = malloc(sizeof(char) * width);
+	if (!new_line)
+		ft_free_lst("Malloc Error\n", lst, game);
+	i = -1;
+	while (++i < len)
+		new_line[i] = ((char *)tmp->content)[i];
+	while (i < width - 1)
+		new_line[i++] = ' ';
+	new_line[i] = 0;
+	free(tmp->content);
+	tmp->content = new_line;
+}
+
+static void	ft_free_lst_no_content(t_list *lst)
+{
+	t_list	*tmp;
+
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		free(tmp);
+	}
+}
+
+t_list	*ft_handle_lst_continue(t_game *game, t_list *tmp, int *i)
+{
+	int		x;
+	char	*line;
+
+	line = (char *)tmp->content;
+	game->map[*i] = line;
+	x = 0;
+	while (line[x])
+	{
+		if (line[x] == 'D')
+			ft_is_door(game, x, *i);
+		else if (line[x] == 'A')
+		{
+			ft_init_sprite(game, x, *i);
+			line[x] = '0';
+		}
+		x++;
+	}
+	(*i)++;
+	return (tmp->next);
+}
+
+void	ft_handle_lst(t_list *lst, int width, int height, t_game *game)
+{
+	t_list	*tmp;
+	int		i;
+
+	if (height < 3 || width < 3)
+		ft_free_lst("Map too small\n", lst, game);
+	tmp = lst;
+	while (tmp)
+	{
+		ft_check_width(tmp, width, lst, game);
+		tmp = tmp->next;
+	}
+	game->map = malloc(sizeof(char *) * height);
+	if (!game->map)
+		ft_free_lst("Malloc Error\n", lst, game);
+	i = 0;
+	tmp = lst;
+	while (tmp)
+		tmp = ft_handle_lst_continue(game, tmp, &i);
+	game->m_width = width;
+	game->m_height = height;
+	ft_free_lst_no_content(lst);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loop_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 20:40:38 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/08 17:00:41 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_draw_line_2d(t_game *game)
+{
+	int		i;
+	double	fraction;
+	double	start_x;
+
+	i = 0;
+	fraction = PI / 3 / game->w_width;
+	start_x = game->player->angle - PI / 6;
+	while (i < game->w_width)
+	{
+		ft_draw_line(game->player, start_x, i, game);
+		start_x += fraction;
+		i++;
+	}
+}
+
+int	ft_loop(t_game *game)
+{
+	int	player_screen_x;
+	int	player_screen_y;
+
+	if (!ft_get_time())
+		return (0);
+	if (game->player->key_action == 1 && game->player->can_interact == 1)
+	{
+		ft_door_status_check(game);
+		game->player->can_interact = 0;
+	}
+	if (game->player->key_action == 0)
+		game->player->can_interact = 1;
+	ft_move_player(game->player, game);
+	ft_clear_frame(game);
+	ft_raycast(game);
+	ft_render_sprites(game);
+	ft_draw_minimap_background(game);
+	ft_draw_map(game);
+	ft_draw_line_2d(game);
+	player_screen_x = MINIMAP_OFFSET + (MINIMAP_SIZE / 2);
+	player_screen_y = MINIMAP_OFFSET + (MINIMAP_SIZE / 2);
+	ft_draw_player(player_screen_x, player_screen_y, 3, game);
+	mlx_put_image_to_window(game->mlx, game->win, game->frame->img, 0, 0);
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 11:53:12 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/03 15:32:10 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static int	ft_argc(void)
+{
+	ft_putstr_fd("./cub3D path_to_map\n", STDERR_FILENO);
+	return (EXIT_FAILURE);
+}
+
+int	main(int argc, char **argv)
+{
+	t_game	*game;
+
+	if (argc != 2)
+		return (ft_argc());
+	game = ft_parse(argv[1]);
+	ft_clear_frame(game);
+	mlx_hook(game->win, KeyPress, KeyPressMask, ft_handle_input, game);
+	mlx_hook(game->win, KeyRelease, KeyReleaseMask, ft_handle_release, game);
+	mlx_hook(game->win, DestroyNotify, 0, mlx_loop_end, game->mlx);
+	mlx_loop_hook(game->mlx, ft_loop, game);
+	mlx_loop(game->mlx);
+	ft_free_all(game);
+	return (0);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_bonus.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/18 13:11:11 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/04 12:41:45 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static int	ft_switch_angle(char angle, int player_x, char *line, t_game *game)
+{
+	line[player_x] = '0';
+	if (angle == 'N')
+		game->player->angle = PI + PI / 2;
+	else if (angle == 'E')
+		game->player->angle = 0;
+	else if (angle == 'S')
+		game->player->angle = PI / 2;
+	else if (angle == 'W')
+		game->player->angle = 2 * PI;
+	game->player->x = player_x;
+	return (player_x);
+}
+
+static char	*ft_skip_blank(int fd, t_game *game)
+{
+	char	*line;
+
+	line = get_next_line(fd);
+	while (line && (!line[0] || line[0] == '\n'))
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (!line)
+		ft_free_gnl_error("No map found in .cub file\n", fd, game);
+	return (line);
+}
+
+static int	ft_check_line(char *line, int fd, t_list *lst, t_game *game)
+{
+	int		i;
+	int		player_x;
+	char	c;
+
+	player_x = -1;
+	i = 0;
+	while (line[i])
+	{
+		c = line[i];
+		if (c != ' ' && c != '1' && c != '0' && c != 'D' && c != 'A'
+			&& c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != '\n')
+		{
+			ft_lstclear(&lst, free);
+			ft_free_gnl_error("Wrong character in map\n", fd, game);
+		}
+		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+			player_x = ft_switch_angle(c, i, line, game);
+		i++;
+	}
+	if (player_x >= 0 && game->player->y >= 0)
+	{
+		ft_lstclear(&lst, free);
+		ft_free_gnl_error("Player have 2 positions\n", fd, game);
+	}
+	return (player_x);
+}
+
+void	ft_open_map(int fd, t_game *game)
+{
+	char	*line;
+	int		height;
+	int		width;
+	t_list	*lst;
+
+	lst = NULL;
+	width = 0;
+	height = 0;
+	line = ft_skip_blank(fd, game);
+	while (line)
+	{
+		if ((int) ft_strlen(line) > width)
+			width = ft_strlen(line);
+		height++;
+		ft_lstadd_back(&lst, ft_lstnew(line));
+		if (ft_check_line(line, fd, lst, game) >= 0)
+			game->player->y = height - 1;
+		line = get_next_line(fd);
+	}
+	close(fd);
+	ft_handle_lst(lst, width, height, game);
+	ft_validate_door(game);
+	ft_flood_fill(game);
+}
+
+void	ft_free_map(t_game *game)
+{
+	int	i;
+
+	if (!game->map)
+		return ;
+	i = 0;
+	while (i < game->m_height)
+		free(game->map[i++]);
+	free(game->map);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/14 20:59:57 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/03 19:58:44 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_free_split(char **split_line)
+{
+	int	i;
+
+	i = 0;
+	while (split_line[i])
+		free(split_line[i++]);
+	free(split_line);
+}
+
+void	ft_free_split_gnl(char *msg, char **split_line, int fd, t_game *game)
+{
+	char	*line;
+
+	if (split_line)
+		ft_free_split(split_line);
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	ft_error(msg, game);
+}
+
+void	ft_free_gnl_error(char *msg, int fd, t_game *game)
+{
+	char	*line;
+
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	ft_error(msg, game);
+}
+
+t_game	*ft_parse(char *map_name)
+{
+	t_game	*game;
+	int		fd;
+
+	game = NULL;
+	fd = ft_open_file(map_name, ".cub", game);
+	game = ft_init_game();
+	if (ft_open_header(fd, game) != 11)
+		ft_free_split_gnl("You need 11 IDs\n", ft_split("a a", ' '), fd, game);
+	ft_open_map(fd, game);
+	return (game);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   header_two_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/03 15:43:17 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 12:41:16 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+int	ft_check_id_continue(char *id)
+{
+	if (id[0] == 'S' && id[1] == 'D')
+		return (1);
+	else if (id[0] == 'S' && id[1] == '1')
+		return (1);
+	else if (id[0] == 'S' && id[1] == '2')
+		return (1);
+	else if (id[0] == 'S' && id[1] == '3')
+		return (1);
+	else if (id[0] == 'S' && id[1] == '4')
+		return (1);
+	return (0);
+}
+
+int	ft_switch_img3(char *id, t_img *img, t_game *game)
+{
+	if (id[0] == 'S' && id[1] == '3')
+	{
+		if (game->sprite_3)
+			return (0);
+		game->sprite_3 = img;
+	}
+	if (id[0] == 'S' && id[1] == '4')
+	{
+		if (game->sprite_4)
+			return (0);
+		game->sprite_4 = img;
+	}
+	return (1);
+}
+
+int	ft_switch_img2(char *id, t_img *img, t_game *game)
+{
+	if (id[0] == 'S' && id[1] == 'D')
+	{
+		if (game->door_img)
+			return (0);
+		game->door_img = img;
+	}
+	if (id[0] == 'S' && id[1] == '1')
+	{
+		if (game->sprite_1)
+			return (0);
+		game->sprite_1 = img;
+	}
+	if (id[0] == 'S' && id[1] == '2')
+	{
+		if (game->sprite_2)
+			return (0);
+		game->sprite_2 = img;
+	}
+	if (!ft_switch_img3(id, img, game))
+		return (0);
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_two_bonus.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/04 12:28:47 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 15:31:48 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_free_doors(t_game *game)
+{
+	if (game->doors)
+		ft_lstclear(&game->doors, free);
+}
+
+void	ft_free_sprites(t_game *game)
+{
+	if (game->sprites)
+		ft_lstclear(&game->sprites, free);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_texture_bonus.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/31 13:14:32 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/07 08:14:02 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static t_img	*ft_select_texture(t_game *game, t_ray *r)
+{
+	t_img	*img;
+
+	if (game->map[r->map_y][r->map_x] == 'D')
+		return (game->door_img);
+	if (r->side == 0)
+	{
+		if (r->step_x == -1)
+			img = game->we_img;
+		else
+			img = game->ea_img;
+	}
+	else
+	{
+		if (r->step_y == -1)
+			img = game->no_img;
+		else
+			img = game->so_img;
+	}
+	return (img);
+}
+
+static void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
+{
+	t->screen_y = r->draw_start;
+	while (t->screen_y <= r->draw_end)
+	{
+		t->tex_y = (int)t->t_pos;
+		t->t_pos += t->step;
+		if (t->tex_y < 0)
+			t->tex_y = 0;
+		if (t->tex_y >= t->t_height)
+			t->tex_y = t->t_height - 1;
+		t->color = ft_get_pixel(t->tex, t->tex_x, t->tex_y);
+		if (r->side == 1)
+			t->color = (t->color >> 1) & 0x7F7F7F;
+		ft_put_pixel(game->frame, i, t->screen_y, t->color);
+		t->screen_y++;
+	}
+}
+
+void	ft_draw_texture(t_game *game, t_ray *r, int i)
+{
+	t_info	t;
+
+	t.tex = ft_select_texture(game, r);
+	t.t_width = t.tex->width;
+	t.t_height = t.tex->height;
+	t.tex_x = (int)(r->wall_x * (double)t.t_width);
+	if (t.tex_x < 0)
+		t.tex_x = 0;
+	if (t.tex_x >= t.t_width)
+		t.tex_x = t.t_width - 1;
+	if (r->side == 0 && r->ray_dir_x > 0)
+		t.tex_x = t.t_width - t.tex_x - 1;
+	if (r->side == 1 && r->ray_dir_y < 0)
+		t.tex_x = t.t_width - t.tex_x - 1;
+	t.step = (double)t.t_height / (double)r->line_height;
+	t.t_pos = (r->draw_start - (game->w_height / 2.0) + (r->line_height / 2.0))
+		* t.step;
+	ft_draw_texture_2(game, r, i, &t);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   proyection_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/31 13:11:26 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 20:31:43 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+double	my_abs(double n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
+
+int	ft_check_wall_door(t_game *game, t_ray *r)
+{
+	char	map_char;
+	t_door	*door;
+
+	map_char = game->map[r->map_y][r->map_x];
+	if (map_char == '1')
+		return (1);
+	else if (map_char == 'D')
+	{
+		door = ft_get_door(game, r->map_x, r->map_y);
+		if (!door || door->state == STATE_CLOSED)
+			return (1);
+	}
+	return (0);
+}
+
+void	ft_realistic_height(t_game *game, t_ray *r)
+{
+	t_player	*player;
+
+	player = game->player;
+	if (r->side == 0)
+		r->perp_dist = (r->sidedist_x - r->deltadist_x);
+	else
+		r->perp_dist = (r->sidedist_y - r->deltadist_y);
+	if (r->perp_dist < 0.0001)
+		r->perp_dist = 0.0001;
+	r->line_height = (int)(game->w_height / r->perp_dist);
+	r->draw_start = -r->line_height / 2 + game->w_height / 2;
+	if (r->draw_start < 0)
+		r->draw_start = 0;
+	r->draw_end = (r->line_height / 2 + game->w_height / 2);
+	if (r->draw_end > game->w_height)
+		r->draw_end = game->w_height - 1;
+	if (r->side == 0)
+		r->wall_x = player->y + r->perp_dist * r->ray_dir_y;
+	else
+		r->wall_x = player->x + r->perp_dist * r->ray_dir_x;
+	r->wall_x -= floor(r->wall_x);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/23 00:15:10 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/08 20:32:09 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_struct_inict(t_ray *r)
+{
+	r->camara = 0;
+	r->ray_dir_x = 0;
+	r->ray_dir_y = 0;
+	r->map_x = 0;
+	r->map_y = 0;
+	r->step_x = 0;
+	r->step_y = 0;
+	r->sidedist_x = 0;
+	r->sidedist_y = 0;
+	r->deltadist_x = 0;
+	r->deltadist_y = 0;
+	r->side = 0;
+	r->hit = 0;
+	r->perp_dist = 0;
+	r->wall_x = 0;
+	r->line_height = 0;
+	r->draw_start = 0;
+	r->draw_end = 0;
+}
+
+static void	ft_inict_camara(t_game *game, t_ray *r, int x)
+{
+	t_player	*p;
+
+	p = game->player;
+	r->camara = 2.0 * x / (double)game->w_width - 1.0;
+	r->ray_dir_x = p->dir_x + p->plane_x * r->camara;
+	r->ray_dir_y = p->dir_y + p->plane_y * r->camara;
+	r->map_x = (int)p->x;
+	r->map_y = (int)p->y;
+	r->deltadist_x = my_abs(1 / r->ray_dir_x);
+	r->deltadist_y = my_abs(1 / r->ray_dir_y);
+}
+
+static void	ft_inict_sidedist(t_ray *r, t_player *player)
+{
+	if (r->ray_dir_x < 0)
+	{
+		r->step_x = -1;
+		r->sidedist_x = (player->x - r->map_x) * r->deltadist_x;
+	}
+	else
+	{
+		r->step_x = 1;
+		r->sidedist_x = (r->map_x + 1.0 - player->x) * r->deltadist_x;
+	}
+	if (r->ray_dir_y < 0)
+	{
+		r->step_y = -1;
+		r->sidedist_y = (player->y - r->map_y) * r->deltadist_y;
+	}
+	else
+	{
+		r->step_y = 1;
+		r->sidedist_y = (r->map_y + 1.0 - player->y) * r->deltadist_y;
+	}
+}
+
+static void	ft_inict_dda(t_game *game, t_ray *r)
+{
+	while (r->hit == 0)
+	{
+		if (r->sidedist_x < r->sidedist_y)
+		{
+			r->sidedist_x += r->deltadist_x;
+			r->map_x += r->step_x;
+			r->side = 0;
+		}
+		else
+		{
+			r->sidedist_y += r->deltadist_y;
+			r->map_y += r->step_y;
+			r->side = 1;
+		}
+		if (r->map_y < 0 || r->map_y >= game->m_height
+			|| r->map_x < 0 || r->map_x >= game->m_width)
+			r->hit = 1;
+		else if (ft_check_wall_door(game, r))
+			r->hit = 1;
+	}
+}
+
+void	ft_raycast(t_game *game)
+{
+	t_ray	r;
+	int		i;
+
+	i = 0;
+	while (i < game->w_width)
+	{
+		ft_struct_inict(&r);
+		ft_inict_camara(game, &r, i);
+		ft_inict_sidedist(&r, game->player);
+		ft_inict_dda(game, &r);
+		ft_realistic_height(game, &r);
+		game->z_buffer[i] = r.perp_dist;
+		ft_draw_texture(game, &r, i);
+		i++;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player_two_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/05 09:56:05 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 12:42:43 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_check_movement_continue(t_player *p, float ex_x,
+									float ex_y, t_game *g)
+{
+	t_door	*door;
+	int		blocked_x;
+	int		blocked_y;
+
+	if (g->map[(int)p->y][(int)p->x] == 'D')
+	{
+		door = ft_get_door(g, (int)p->x, (int)p->y);
+		if (door && door->state == STATE_OPEN)
+			return ;
+		blocked_x = (g->map[(int)p->y][(int)ex_x] == 'D');
+		blocked_y = (g->map[(int)ex_y][(int)p->x] == 'D');
+		if (blocked_x && blocked_y)
+		{
+			p->x = ex_x;
+			p->y = ex_y;
+		}
+		else if (!blocked_x)
+			p->x = ex_x;
+		else if (!blocked_y)
+			p->y = ex_y;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/07 08:41:48 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 16:53:30 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+long long	get_time_in_usec(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000000) + tv.tv_usec);
+}
+
+int	ft_get_time(void)
+{
+	static long long	last_time;
+	long long			current_time;
+	long long			time_diff;
+
+	current_time = get_time_in_usec();
+	time_diff = current_time - last_time;
+	if (time_diff < FRAME_TIME)
+		return (0);
+	last_time = current_time;
+	return (1);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minimap_bonus.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/07 11:15:29 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 12:45:03 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_put_pixel_minimap(t_img *img, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < MINIMAP_OFFSET || x >= (MINIMAP_OFFSET + MINIMAP_SIZE)
+		|| y < MINIMAP_OFFSET || y >= (MINIMAP_OFFSET + MINIMAP_SIZE))
+		return ;
+	if (x < 0 || x >= img->width || y < 0 || y >= img->height)
+		return ;
+	dst = img->data + ((y * img->size_line) + (x * (img->bpp / 8)));
+	*(unsigned int *)dst = color;
+}
+
+void	ft_draw_minimap_background(t_game *game)
+{
+	int	x;
+	int	y;
+	int	color;
+
+	color = 0x303030;
+	y = MINIMAP_OFFSET;
+	while (y < MINIMAP_OFFSET + MINIMAP_SIZE)
+	{
+		x = MINIMAP_OFFSET;
+		while (x < MINIMAP_OFFSET + MINIMAP_SIZE)
+		{
+			if (x < game->frame->width && y < game->frame->height)
+				ft_put_pixel(game->frame, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
+
+int	ft_is_wall_or_door(t_game *game, float ray_x, float ray_y)
+{
+	t_door	*door;
+
+	if (ray_y < 0 || ray_y >= game->m_height
+		|| ray_x < 0 || ray_x >= game->m_width)
+		return (1);
+	if (game->map[(int) ray_y][(int) ray_x] == '1')
+		return (1);
+	if (game->map[(int) ray_y][(int) ray_x] == 'D')
+	{
+		door = ft_get_door(game, (int)ray_x, (int)ray_y);
+		if (!door || door->state == STATE_CLOSED)
+			return (1);
+	}
+	return (0);
+}
+
+void	ft_draw_square(int x, int y, int size, t_game *game)
+{
+	int	color;
+	int	i;
+
+	color = 0x00FF00;
+	i = 0;
+	while (i < size)
+	{
+		ft_put_pixel_minimap(game->frame, x + i, y, color);
+		ft_put_pixel_minimap(game->frame, x, y + i, color);
+		ft_put_pixel_minimap(game->frame, x + size, y + i, color);
+		ft_put_pixel_minimap(game->frame, x + i, y + size, color);
+		i++;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sprites_utils_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/08 17:26:51 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 19:18:35 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_init_sprite(t_game *game, int x, int y)
+{
+	t_sprite	*sprite;
+
+	sprite = malloc(sizeof(t_sprite));
+	if (!sprite)
+		ft_error("Malloc sprite failed", game);
+	sprite->x = x + 0.5;
+	sprite->y = y + 0.5;
+	sprite->dist = 0;
+	sprite->anim_frame = 0;
+	sprite->last_anim_time = 0;
+	ft_lstadd_back(&game->sprites, ft_lstnew(sprite));
+}
+
+void	ft_lstsort(t_list **list, int (*cmp)(void *, void *))
+{
+	int		swapped;
+	t_list	*current;
+	void	*temp_content;
+
+	if (!list || !*list)
+		return ;
+	swapped = 1;
+	while (swapped)
+	{
+		swapped = 0;
+		current = *list;
+		while (current && current->next)
+		{
+			if (cmp(current->content, current->next->content) > 0)
+			{
+				temp_content = current->content;
+				current->content = current->next->content;
+				current->next->content = temp_content;
+				swapped = 1;
+			}
+			current = current->next;
+		}
+	}
+}
+
+void	ft_update_sprite_animation(t_sprite *sprite)
+{
+	long long	current_time;
+
+	current_time = get_time_in_usec();
+	if (current_time - sprite->last_anim_time > ANIM_SPEED)
+	{
+		sprite->anim_frame++;
+		if (sprite->anim_frame > 3)
+			sprite->anim_frame = 0;
+		sprite->last_anim_time = current_time;
+	}
+}
+
+int	ft_compare_sprite_dist(void *a, void *b)
+{
+	t_sprite	*sprite_a;
+	t_sprite	*sprite_b;
+
+	sprite_a = (t_sprite *)a;
+	sprite_b = (t_sprite *)b;
+	if (sprite_a->dist < sprite_b->dist)
+		return (1);
+	if (sprite_a->dist > sprite_b->dist)
+		return (-1);
+	return (0);
+}
+
+void	ft_sort_sprites(t_game *game)
+{
+	t_list		*node;
+	t_sprite	*sprite;
+	t_player	*p;
+
+	if (!game->sprites)
+		return ;
+	p = game->player;
+	node = game->sprites;
+	while (node)
+	{
+		sprite = (t_sprite *)node->content;
+		sprite->dist = ((p->x - sprite->x) * (p->x - sprite->x)
+				+ (p->y - sprite->y) * (p->y - sprite->y));
+		node = node->next;
+	}
+	ft_lstsort(&game->sprites, ft_compare_sprite_dist);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   add_door_two_bonus.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/05 13:04:02 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/05 13:19:16 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+void	ft_update_doors_continue(t_door *door)
+{
+	if (door->state == STATE_CLOSING)
+	{
+		door->progress -= DOOR_SPEED;
+		if (door->progress <= 0.0)
+		{
+			door->progress = 0.0;
+			door->state = STATE_IDLE;
+		}
+	}
+}
+
+void	ft_update_doors(t_game *game)
+{
+	t_list	*node;
+	t_door	*door;
+
+	node = game->doors;
+	while (node)
+	{
+		door = (t_door *)node->content;
+		if (door->state == STATE_OPENING)
+		{
+			door->progress += DOOR_SPEED;
+			if (door->progress >= 1.0)
+			{
+				door->progress = 1.0;
+				door->state = STATE_IDLE;
+			}
+		}
+		ft_update_doors_continue(door);
+		node = node->next;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 16:31:27 by yel-mens          #+#    #+#             */
+/*   Updated: 2025/11/09 16:53:56 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_angle_player(t_player *player)
+{
+	double	angle_speed;
+
+	angle_speed = 0.04;
+	if (player->left_rotate)
+		player->angle -= angle_speed;
+	if (player->right_rotate)
+		player->angle += angle_speed;
+	if (player->angle > 2 * PI)
+		player->angle = 0;
+	if (player->angle < 0)
+		player->angle = 2 * PI;
+}
+
+static void	ft_position_player(t_player *player, float speed)
+{
+	double	cos_angle;
+	double	sin_angle;
+
+	cos_angle = cos(player->angle);
+	sin_angle = sin(player->angle);
+	if (player->key_up)
+	{
+		player->x += cos_angle * speed;
+		player->y += sin_angle * speed;
+	}
+	if (player->key_down)
+	{
+		player->x -= cos_angle * speed;
+		player->y -= sin_angle * speed;
+	}
+	if (player->key_left)
+	{
+		player->x += sin_angle * speed;
+		player->y -= cos_angle * speed;
+	}
+	if (player->key_right)
+	{
+		player->x -= sin_angle * speed;
+		player->y += cos_angle * speed;
+	}
+}
+
+static int	ft_check_offmap(t_player *player, int ex_x, int ex_y, t_game *g)
+{
+	int	x;
+	int	y;
+	int	off_map;
+
+	off_map = 0;
+	x = player->x;
+	y = player->y;
+	if (y < 0 || y > g->m_height)
+	{
+		player->y = ex_y;
+		off_map = 1;
+	}
+	if (x < 0 || x > g->m_width)
+	{
+		player->x = ex_x;
+		off_map = 1;
+	}
+	return (off_map);
+}
+
+static void	ft_check_movement(t_player *p, float ex_x, float ex_y, t_game *g)
+{
+	int	blocked_x;
+	int	blocked_y;
+
+	if (ft_check_offmap(p, ex_x, ex_y, g))
+		return ;
+	if (g->map[(int)p->y][(int)p->x] == '1')
+	{
+		blocked_x = (g->map[(int)p->y][(int)ex_x] == '1');
+		blocked_y = (g->map[(int)ex_y][(int)p->x] == '1');
+		if (blocked_x && blocked_y)
+		{
+			p->x = ex_x;
+			p->y = ex_y;
+		}
+		else if (!blocked_x)
+			p->x = ex_x;
+		else if (!blocked_y)
+			p->y = ex_y;
+	}
+	ft_check_movement_continue(p, ex_x, ex_y, g);
+}
+
+void	ft_move_player(t_player *player, t_game *game)
+{
+	double	ex_x;
+	double	ex_y;
+	double	speed;
+
+	speed = 0.03;
+	ft_angle_player(player);
+	player->dir_x = cos(player->angle);
+	player->dir_y = sin(player->angle);
+	player->plane_x = -player->dir_y * FOV_PLANE;
+	player->plane_y = player->dir_x * FOV_PLANE;
+	ex_x = player->x;
+	ex_y = player->y;
+	ft_position_player(player, speed);
+	ft_check_movement(player, ex_x, ex_y, game);
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sprites_bonus.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/08 14:47:44 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/09 16:28:17 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D_bonus.h"
+
+static void	ft_draw_sprite_stripe(t_sprite_draw *d, int x)
+{
+	int	y;
+	int	tex_y;
+	int	color;
+	int	tex_x;
+
+	tex_x = (int)(256 * (x - d->start_x) * d->texture->width / d->width) / 256;
+	if (d->transform_y > 0 && x >= 0 && x < d->game->w_width
+		&& d->transform_y < d->game->z_buffer[x])
+	{
+		y = d->start_y;
+		while (y < d->end_y)
+		{
+			tex_y = (int)((((y * 256) - (d->game->w_height * 128)
+							+ (d->height * 128)) * d->texture->height)
+					/ d->height) / 256;
+			if (tex_y < 0)
+				tex_y = 0;
+			if (tex_y >= d->texture->height)
+				tex_y = d->texture->height - 1;
+			color = ft_get_pixel(d->texture, tex_x, tex_y);
+			if ((color & 0x00FFFFFF) != 0)
+				ft_put_pixel(d->game->frame, x, y, color);
+			y++;
+		}
+	}
+}
+
+static void	ft_calculate_draw_limits(t_game *game, t_sprite_draw *d)
+{
+	d->height = (int)my_abs(game->w_height / d->transform_y);
+	d->start_y = -d->height / 2 + game->w_height / 2;
+	if (d->start_y < 0)
+		d->start_y = 0;
+	d->end_y = d->height / 2 + game->w_height / 2;
+	if (d->end_y >= game->w_height)
+		d->end_y = game->w_height;
+	d->width = (int)my_abs(game->w_height / d->transform_y);
+	d->start_x = -d->width / 2 + d->screen_x;
+	if (d->start_x < 0)
+		d->start_x = 0;
+	d->end_x = d->width / 2 + d->screen_x;
+	if (d->end_x >= game->w_width)
+		d->end_x = game->w_width;
+}
+
+static void	ft_calculate_transform(t_game *game, t_sprite *sprite,
+	t_sprite_draw *d)
+{
+	double		sprite_x;
+	double		sprite_y;
+	double		inv_det;
+	t_player	*p;
+
+	p = game->player;
+	sprite_x = sprite->x - p->x;
+	sprite_y = sprite->y - p->y;
+	inv_det = 1.0 / (p->plane_x * p->dir_y - p->dir_x * p->plane_y);
+	d->transform_x = inv_det * (p->dir_y * sprite_x - p->dir_x * sprite_y);
+	d->transform_y = inv_det * (-p->plane_y * sprite_x + p->plane_x * sprite_y);
+	d->screen_x = (int)((game->w_width / 2)
+			* (1 + d->transform_x / d->transform_y));
+}
+
+static void	ft_draw_one_sprite(t_game *game, t_sprite *sprite)
+{
+	t_sprite_draw	d;
+	int				x;
+
+	d.game = game;
+	if (sprite->anim_frame == 0)
+		d.texture = game->sprite_1;
+	else if (sprite->anim_frame == 1)
+		d.texture = game->sprite_2;
+	else if (sprite->anim_frame == 2)
+		d.texture = game->sprite_3;
+	else
+		d.texture = game->sprite_4;
+	ft_calculate_transform(game, sprite, &d);
+	ft_calculate_draw_limits(game, &d);
+	x = d.start_x;
+	while (x < d.end_x)
+	{
+		ft_draw_sprite_stripe(&d, x);
+		x++;
+	}
+}
+
+void	ft_render_sprites(t_game *game)
+{
+	t_list		*node;
+	t_sprite	*sprite;
+
+	ft_sort_sprites(game);
+	node = game->sprites;
+	while (node)
+	{
+		sprite = (t_sprite *)node->content;
+		ft_update_sprite_animation(sprite);
+		ft_draw_one_sprite(game, sprite);
+		node = node->next;
+	}
+}
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3D_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 19:41:52 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
+
+# include "cub3D_struct_bonus.h"
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/time.h>
+# include <math.h>
+# include <X11/keysym.h>
+# include <X11/X.h>
+# include "mlx.h"
+# include "ft_printf.h"
+# include "get_next_line.h"
+# include "libft.h"
+
+# define FRAME_TIME 16666
+# define PI 3.14159265359
+# define BLOCK 10
+# define FOV_PLANE 0.66
+# define STATE_CLOSED 0
+# define STATE_OPEN 1
+# define MINIMAP_SIZE 180
+# define MINIMAP_OFFSET 20
+# define ANIM_SPEED 150000
+# define TRANSPARENCY_COLOR 0x0
+
+void		ft_door_status_check(t_game *game);
+void		ft_is_door(t_game *game, int x, int y);
+void		ft_validate_door(t_game *game);
+t_door		*ft_get_door(t_game *game, int x, int y);
+int			ft_check_wall_door(t_game *game, t_ray *r);
+t_game		*ft_init_game(void);
+t_game		*ft_parse(char *map_name);
+int			ft_open_file(char *filename, char *suffix, t_game *game);
+int			ft_check_id_continue(char *id);
+int			ft_switch_img2(char *id, t_img *img, t_game *game);
+int			ft_open_header(int fd, t_game *game);
+void		ft_open_map(int fd, t_game *game);
+void		ft_handle_lst(t_list *lst, int width, int height, t_game *game);
+void		ft_flood_fill(t_game *game);
+int			ft_get_pixel(t_img *img, int x, int y);
+void		ft_put_pixel(t_img *img, int x, int y, int color);
+void		ft_put_image(t_img *img, int x_offset, int y_offset, t_img *frame);
+t_img		*ft_open_image(void *mlx, char *name, int width, int height);
+void		ft_clear_frame(t_game *game);
+int			ft_handle_input(int keysym, t_game *game);
+int			ft_handle_release(int keysym, t_game *game);
+void		ft_check_movement_continue(t_player *p, float ex_x, float ex_y, \
+t_game *g);
+void		ft_move_player(t_player *player, t_game *game);
+void		ft_draw_square(int x, int y, int size, t_game *game);
+void		ft_draw_player(float x, float y, int size, t_game *game);
+void		ft_draw_map(t_game *game);
+void		ft_draw_line(t_player *player, float start_x, int i, t_game *game);
+int			ft_loop(t_game *game);
+void		ft_error(char *msg, t_game *game);
+void		ft_free_all(t_game *game);
+void		ft_free_split_gnl(char *msg, char **split_line, int fd, \
+t_game *game);
+void		ft_free_split(char **split_line);
+void		ft_free_image(t_img *img, t_game *game);
+void		ft_free_map(t_game *game);
+void		ft_free_gnl_error(char *msg, int fd, t_game *game);
+void		ft_free_doors(t_game *game);
+double		my_abs(double n);
+void		ft_realistic_height(t_game *game, t_ray *r);
+void		ft_draw_texture(t_game *game, t_ray *r, int i);
+void		ft_raycast(t_game *game);
+int			ft_get_time(void);
+void		ft_put_pixel_minimap(t_img *img, int x, int y, int color);
+void		ft_draw_minimap_background(t_game *game);
+int			ft_is_wall_or_door(t_game *game, float ray_x, float ray_y);
+void		ft_init_sprite(t_game *game, int x, int y);
+void		ft_free_sprites(t_game *game);
+long long	get_time_in_usec(void);
+void		ft_update_sprite_animation(t_sprite *sprite);
+int			ft_compare_sprite_dist(void *a, void *b);
+void		ft_sort_sprites(t_game *game);
+void		ft_render_sprites(t_game *game);
+void		ft_lstsort(t_list **list, int (*cmp)(void *, void *));
+
+#endif
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3D_struct_bonus.h                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/07 13:59:04 by brturcio          #+#    #+#             */
+/*   Updated: 2025/11/08 17:58:03 by brturcio         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CUB3D_STRUCT_BONUS_H
+# define CUB3D_STRUCT_BONUS_H
+
+# include "libft.h"
+
+typedef enum e_direction
+{
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT
+}			t_direction;
+
+typedef struct s_img	t_img;
+typedef struct s_game	t_game;
+
+typedef struct s_sprite
+{
+	double		x;
+	double		y;
+	double		dist;
+	int			anim_frame;
+	long long	last_anim_time;
+
+}	t_sprite;
+
+typedef struct s_sprite_draw
+{
+	t_game		*game;
+	t_img		*texture;
+	double		transform_x;
+	double		transform_y;
+	int			screen_x;
+	int			height;
+	int			width;
+	int			start_x;
+	int			end_x;
+	int			start_y;
+	int			end_y;
+}	t_sprite_draw;
+
+typedef struct s_minimap_data
+{
+	float	cos_angle;
+	float	sin_angle;
+	float	ray_x;
+	float	ray_y;
+	int		player_screen_x;
+	int		player_screen_y;
+	t_game	*game;
+}	t_minimap_data;
+
+typedef struct s_info
+{
+	t_img	*tex;
+
+	int		t_width;
+	int		t_height;
+	int		tex_y;
+	int		tex_x;
+	int		color;
+	int		screen_y;
+	double	step;
+	double	t_pos;
+}	t_info;
+
+typedef struct s_ray
+{
+	double	camara;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
+	double	sidedist_x;
+	double	sidedist_y;
+	double	deltadist_x;
+	double	deltadist_y;
+	int		side;
+	int		hit;
+	double	perp_dist;
+	double	wall_x;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+}	t_ray;
+
+typedef struct t_player
+{
+	float	x;
+	float	y;
+	float	angle;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	int		key_up;
+	int		key_down;
+	int		key_left;
+	int		key_right;
+	int		left_rotate;
+	int		right_rotate;
+	int		key_action;
+	int		can_interact;
+}				t_player;
+
+typedef struct s_img
+{
+	void	*img;
+	char	*data;
+	int		bpp;
+	int		size_line;
+	int		edn;
+	int		width;
+	int		height;
+	int		x;
+	int		y;
+}				t_img;
+
+typedef struct s_door
+{
+	int		state;
+	int		x;
+	int		y;
+}	t_door;
+
+typedef struct s_game
+{
+	void		*mlx;
+	void		*win;
+	int			w_width;
+	int			w_height;
+	char		**map;
+	int			m_width;
+	int			m_height;
+	int			floor_color;
+	int			ceiling_color;
+	int			count_doors;
+	t_img		*no_img;
+	t_img		*so_img;
+	t_img		*we_img;
+	t_img		*ea_img;
+	t_img		*door_img;
+	t_img		*sprite_1;
+	t_img		*sprite_2;
+	t_img		*sprite_3;
+	t_img		*sprite_4;
+	t_player	*player;
+	t_img		*frame;
+	t_ray		*ray;
+	t_info		*info;
+	t_list		*doors;
+	t_list		*sprites;
+	double		*z_buffer;
+}				t_game;
+
+#endif

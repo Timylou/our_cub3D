@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/08 19:41:52 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/10 10:20:01 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ int			ft_compare_sprite_dist(void *a, void *b);
 void		ft_sort_sprites(t_game *game);
 void		ft_render_sprites(t_game *game);
 void		ft_lstsort(t_list **list, int (*cmp)(void *, void *));
+void		ft_draw_sprite_stripe(t_sprite_draw *d, int x);
 
 #endif

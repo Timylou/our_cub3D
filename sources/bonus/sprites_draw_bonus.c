@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 10:09:57 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/10 10:19:41 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/10 12:01:58 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void	ft_draw_sprite_stripe(t_sprite_draw *d, int x)
 	unclamped_start_x = -d->width / 2 + d->screen_x;
 	tex_x = (int)(256 * (x - unclamped_start_x) * d->texture->width
 			/ d->width) / 256;
+	if (tex_x < 0)
+		tex_x = 0;
+	if (tex_x >= d->texture->width)
+		tex_x = d->texture->width - 1;
 	if (d->transform_y > 0 && x >= 0 && x < d->game->w_width
 		&& d->transform_y < d->game->z_buffer[x])
 	{

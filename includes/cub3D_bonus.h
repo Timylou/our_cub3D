@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/10 10:20:01 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:43:31 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ t_img		*ft_open_image(void *mlx, char *name, int width, int height);
 void		ft_clear_frame(t_game *game);
 int			ft_handle_input(int keysym, t_game *game);
 int			ft_handle_release(int keysym, t_game *game);
-void		ft_check_movement_continue(t_player *p, float ex_x, float ex_y, \
-t_game *g);
 void		ft_move_player(t_player *player, t_game *game);
 void		ft_draw_square(int x, int y, int size, t_game *game);
 void		ft_draw_player(float x, float y, int size, t_game *game);

@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 13:59:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/08 17:58:03 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/10 14:56:17 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,6 @@ typedef struct s_game
 	t_img		*sprite_4;
 	t_player	*player;
 	t_img		*frame;
-	t_ray		*ray;
-	t_info		*info;
 	t_list		*doors;
 	t_list		*sprites;
 	double		*z_buffer;

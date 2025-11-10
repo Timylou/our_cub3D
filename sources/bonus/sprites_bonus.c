@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 14:47:44 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/08 20:29:14 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/09 16:28:17 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static void	ft_draw_sprite_stripe(t_sprite_draw *d, int x)
 			tex_y = (int)((((y * 256) - (d->game->w_height * 128)
 							+ (d->height * 128)) * d->texture->height)
 					/ d->height) / 256;
+			if (tex_y < 0)
+				tex_y = 0;
+			if (tex_y >= d->texture->height)
+				tex_y = d->texture->height - 1;
 			color = ft_get_pixel(d->texture, tex_x, tex_y);
 			if ((color & 0x00FFFFFF) != 0)
 				ft_put_pixel(d->game->frame, x, y, color);

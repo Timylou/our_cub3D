@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/10 13:43:31 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/10 18:29:51 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,11 @@
 # define STATE_OPEN 1
 # define MINIMAP_SIZE 180
 # define MINIMAP_OFFSET 20
-# define ANIM_SPEED 150000
+# define ANIM_SPEED 100000
 # define TRANSPARENCY_COLOR 0x0
+# define MOUSE_SENSITIVITY 0.002
+# define ANGLE_SPEED 0.05
+# define SPEED 0.04
 
 void		ft_door_status_check(t_game *game);
 void		ft_is_door(t_game *game, int x, int y);
@@ -93,5 +96,6 @@ void		ft_sort_sprites(t_game *game);
 void		ft_render_sprites(t_game *game);
 void		ft_lstsort(t_list **list, int (*cmp)(void *, void *));
 void		ft_draw_sprite_stripe(t_sprite_draw *d, int x);
+int			handle_mouse_move(int x, int y, t_game *game);
 
 #endif

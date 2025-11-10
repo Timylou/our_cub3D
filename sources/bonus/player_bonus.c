@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:31:27 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/10 13:39:50 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/10 18:40:47 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	ft_angle_player(t_player *player)
 {
 	double	angle_speed;
 
-	angle_speed = 0.04;
+	angle_speed = ANGLE_SPEED;
 	if (player->left_rotate)
 		player->angle -= angle_speed;
 	if (player->right_rotate)
@@ -27,29 +27,29 @@ static void	ft_angle_player(t_player *player)
 		player->angle = 2 * PI;
 }
 
-static void	ft_position_player(t_player *p, float speed, double *move_x, double *move_y)
+static void	ft_position_player(t_player *p, double *move_x, double *move_y)
 {
 	*move_x = 0.0;
 	*move_y = 0.0;
 	if (p->key_up)
 	{
-		*move_x += p->dir_x * speed;
-		*move_y += p->dir_y * speed;
+		*move_x += p->dir_x * SPEED;
+		*move_y += p->dir_y * SPEED;
 	}
 	if (p->key_down)
 	{
-		*move_x -= p->dir_x * speed;
-		*move_y -= p->dir_y * speed;
+		*move_x -= p->dir_x * SPEED;
+		*move_y -= p->dir_y * SPEED;
 	}
 	if (p->key_left)
 	{
-		*move_x += p->dir_y * speed;
-		*move_y -= p->dir_x * speed;
+		*move_x += p->dir_y * SPEED;
+		*move_y -= p->dir_x * SPEED;
 	}
 	if (p->key_right)
 	{
-		*move_x -= p->dir_y * speed;
-		*move_y += p->dir_x * speed;
+		*move_x -= p->dir_y * SPEED;
+		*move_y += p->dir_x * SPEED;
 	}
 }
 
@@ -97,14 +97,12 @@ void	ft_move_player(t_player *player, t_game *game)
 {
 	double	move_x;
 	double	move_y;
-	double	speed;
 
-	speed = 0.03;
 	ft_angle_player(player);
 	player->dir_x = cos(player->angle);
 	player->dir_y = sin(player->angle);
 	player->plane_x = -player->dir_y * FOV_PLANE;
 	player->plane_y = player->dir_x * FOV_PLANE;
-	ft_position_player(player, speed, &move_x, &move_y);
+	ft_position_player(player, &move_x, &move_y);
 	ft_check_movement(game, move_x, move_y);
 }

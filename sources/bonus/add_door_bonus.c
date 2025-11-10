@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 11:26:21 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/10 14:49:51 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/10 18:40:15 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ void	ft_door_status_check(t_game *game)
 
 	map_x = (int)(game->player->x + game->player->dir_x);
 	map_y = (int)(game->player->y + game->player->dir_y);
-	if (map_y < 0 || map_y >= game->m_height || map_x < 0 || map_x >= game->m_width)
-		return;
+	if (map_y < 0 || map_y >= game->m_height
+		|| map_x < 0 || map_x >= game->m_width)
+		return ;
 	if (game->map[map_y][map_x] == 'D')
 	{
 		door = ft_get_door(game, map_x, map_y);

@@ -6,13 +6,13 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 20:40:38 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/08 17:00:41 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 11:38:12 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-void	ft_draw_line_2d(t_game *game)
+static void	ft_draw_line_2d(t_game *game)
 {
 	int		i;
 	double	fraction;

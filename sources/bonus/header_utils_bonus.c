@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header_two_bonus.c                                 :+:      :+:    :+:   */
+/*   header_utils_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 15:43:17 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/08 12:41:16 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 10:39:30 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-int	ft_check_id_continue(char *id)
+int	ft_check_id_02(char *id)
 {
 	if (id[0] == 'S' && id[1] == 'D')
 		return (1);
@@ -27,7 +27,7 @@ int	ft_check_id_continue(char *id)
 	return (0);
 }
 
-int	ft_switch_img3(char *id, t_img *img, t_game *game)
+static int	ft_switch_img_03(char *id, t_img *img, t_game *game)
 {
 	if (id[0] == 'S' && id[1] == '3')
 	{
@@ -44,7 +44,7 @@ int	ft_switch_img3(char *id, t_img *img, t_game *game)
 	return (1);
 }
 
-int	ft_switch_img2(char *id, t_img *img, t_game *game)
+int	ft_switch_img_02(char *id, t_img *img, t_game *game)
 {
 	if (id[0] == 'S' && id[1] == 'D')
 	{
@@ -64,7 +64,7 @@ int	ft_switch_img2(char *id, t_img *img, t_game *game)
 			return (0);
 		game->sprite_2 = img;
 	}
-	if (!ft_switch_img3(id, img, game))
+	if (!ft_switch_img_03(id, img, game))
 		return (0);
 	return (1);
 }

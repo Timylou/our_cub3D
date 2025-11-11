@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:03:12 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/03 18:52:32 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 10:39:07 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	ft_check_id(char **split_line, int fd, t_game *game)
 		return ;
 	else if (id[0] == 'E' && id[1] == 'A' && !id[2])
 		return ;
-	else if (ft_check_id_continue(id))
+	else if (ft_check_id_02(id))
 		return ;
 	else if ((id[0] == 'F' || id [0] == 'C') && !id[1])
 		return ;
@@ -62,7 +62,7 @@ static int	ft_switch_img(char *id, t_img *img, t_game *game)
 			return (0);
 		game->ea_img = img;
 	}
-	return (ft_switch_img2(id, img, game));
+	return (ft_switch_img_02(id, img, game));
 }
 
 static void	ft_rgb_str_to_hex(char *rgb, char **split, int fd, t_game *game)

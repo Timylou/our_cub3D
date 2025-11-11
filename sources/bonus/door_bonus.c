@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_door_bonus.c                                   :+:      :+:    :+:   */
+/*   door_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 11:26:21 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/10 18:40:15 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:19:43 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ft_is_door(t_game *game, int x, int y)
 	game->count_doors++;
 }
 
-void	ft_valid_one_door(t_game *game, int x, int y)
+static void	ft_valid_one_door(t_game *game, int x, int y)
 {
 	int		vertical;
 	int		horizontal;

@@ -6,13 +6,13 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 21:00:35 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/08 12:53:33 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:25:16 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-void	ft_init_minimap_data(t_minimap_data *data, t_player *player,
+static void	ft_init_minimap_data(t_minimap_data *data, t_player *player,
 							float start_x, t_game *game)
 {
 	data->game = game;
@@ -63,7 +63,7 @@ void	ft_draw_line(t_player *player, float start_x, int i, t_game *game)
 	}
 }
 
-static void	ft_draw_map_continue(t_game *game, int x, int y)
+static void	ft_draw_map_02(t_game *game, int x, int y)
 {
 	int	screen_x;
 	int	screen_y;
@@ -89,7 +89,7 @@ void	ft_draw_map(t_game *game)
 		while (x < game->m_width)
 		{
 			if (game->map[y][x] == '1')
-				ft_draw_map_continue(game, x, y);
+				ft_draw_map_02(game, x, y);
 			x++;
 		}
 		y++;

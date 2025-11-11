@@ -6,13 +6,13 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 10:09:57 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/10 12:01:58 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:25:36 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D_bonus.h"
 
-static void	ft_draw_stripe_contine(t_sprite_draw *d, int x, int tex_x, int y)
+static void	ft_draw_stripe_02(t_sprite_draw *d, int x, int tex_x, int y)
 {
 	int	color;
 	int	tex_y;
@@ -47,7 +47,7 @@ void	ft_draw_sprite_stripe(t_sprite_draw *d, int x)
 		y = d->start_y;
 		while (y < d->end_y)
 		{
-			ft_draw_stripe_contine(d, x, tex_x, y);
+			ft_draw_stripe_02(d, x, tex_x, y);
 			y++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 13:44:37 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/08 14:55:03 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 10:45:00 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	ft_free_lst_no_content(t_list *lst)
 	}
 }
 
-t_list	*ft_handle_lst_continue(t_game *game, t_list *tmp, int *i)
+static t_list	*ft_handle_lst_01(t_game *game, t_list *tmp, int *i)
 {
 	int		x;
 	char	*line;
@@ -96,7 +96,7 @@ void	ft_handle_lst(t_list *lst, int width, int height, t_game *game)
 	i = 0;
 	tmp = lst;
 	while (tmp)
-		tmp = ft_handle_lst_continue(game, tmp, &i);
+		tmp = ft_handle_lst_01(game, tmp, &i);
 	game->m_width = width;
 	game->m_height = height;
 	ft_free_lst_no_content(lst);

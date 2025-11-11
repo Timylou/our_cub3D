@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_texture_bonus.c                               :+:      :+:    :+:   */
+/*   draw_utils_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 13:14:32 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/07 08:14:02 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/11 12:20:14 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static t_img	*ft_select_texture(t_game *game, t_ray *r)
 	return (img);
 }
 
-static void	ft_draw_texture_2(t_game *game, t_ray *r, int i, t_info *t)
+static void	ft_draw_texture_02(t_game *game, t_ray *r,
+	int i, t_info *t)
 {
 	t->screen_y = r->draw_start;
 	while (t->screen_y <= r->draw_end)
@@ -73,5 +74,5 @@ void	ft_draw_texture(t_game *game, t_ray *r, int i)
 	t.step = (double)t.t_height / (double)r->line_height;
 	t.t_pos = (r->draw_start - (game->w_height / 2.0) + (r->line_height / 2.0))
 		* t.step;
-	ft_draw_texture_2(game, r, i, &t);
+	ft_draw_texture_02(game, r, i, &t);
 }

@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 10:03:12 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/11 10:39:07 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/12 15:43:02 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	ft_handle_line(char **split_line, int fd, t_game *game)
 		if (!ft_switch_img(split_line[0], img, game))
 		{
 			if (img->img)
-				free(img->img);
+				mlx_destroy_image(game->mlx, img->img);
 			free(img);
 			ft_free_split_gnl("2 similar ID detected\n", split_line, fd, game);
 		}

@@ -6,7 +6,7 @@
 #    By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/14 11:29:40 by brturcio          #+#    #+#              #
-#    Updated: 2025/11/11 14:18:26 by brturcio         ###   ########.fr        #
+#    Updated: 2025/11/12 12:15:42 by brturcio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS :=			main.c file.c parse.c error.c init.c header.c \
 				frame.c input.c loop.c raycasting.c \
 				draw_texture.c proyection.c
 
-BONUS_SRCS :=	door_bonus.c draw_bonus.c draw_utils_bonus.c error_bonus.c error_utils_bonus.c \
+BONUS_SRCS :=	door_bonus.c draw_bonus.c draw_texture_bonus.c error_bonus.c error_utils_bonus.c \
 				file_bonus.c flood_fill_bonus.c frame_bonus.c header_bonus.c header_utils_bonus.c \
 				image_bonus.c init_bonus.c input_bonus.c list_bonus.c loop_bonus.c main_bonus.c \
 				map_bonus.c minimap_bonus.c mouse_bonus.c parse_bonus.c player_bonus.c \

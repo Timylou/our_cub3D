@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/11 12:17:09 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/12 12:07:35 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,6 @@ int			ft_switch_img_02(char *id, t_img *img, t_game *game);
 void		ft_free_image(t_img *img, t_game *game);
 int			ft_get_pixel(t_img *img, int x, int y);
 void		ft_put_pixel(t_img *img, int x, int y, int color);
-void		ft_put_image(t_img *img, int x_offset, int y_offset, t_img *frame);
 t_img		*ft_open_image(void *mlx, char *name, int width, int height);
 
 /* [ init_bonus.c ] ══════════════════════════════════════════════════════════*/

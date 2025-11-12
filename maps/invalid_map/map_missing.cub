@@ -1,0 +1,7 @@
+NO ./textures/north.xpm
+SO ./textures/south.xpm
+WE ./textures/west.png
+EA ./textures/east.png
+
+F 138,46,0
+C 0,0,50

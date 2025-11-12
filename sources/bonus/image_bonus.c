@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:59:44 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/11 10:41:18 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/12 12:07:17 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,6 @@ void	ft_put_pixel(t_img *img, int x, int y, int color)
 
 	dst = img->data + ((y * img->size_line) + (x * (img->bpp / 8)));
 	*(unsigned int *)dst = color;
-}
-
-void	ft_put_image(t_img *img, int x_offset, int y_offset, t_img *frame)
-{
-	int	x;
-	int	y;
-	int	color;
-
-	if (!frame || !img)
-		return ;
-	y = 0;
-	while (y <= img->height)
-	{
-		x = 0;
-		while (x <= img->width)
-		{
-			color = ft_get_pixel(img, x, y);
-			if (color >= 0)
-				ft_put_pixel(frame, x + x_offset, y + y_offset, color);
-			x++;
-		}
-		y++;
-	}
 }
 
 t_img	*ft_open_image(void *mlx, char *name, int width, int height)

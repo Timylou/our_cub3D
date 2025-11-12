@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:01:30 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/11 14:30:56 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/12 11:37:33 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,6 @@ void	ft_flood_fill(t_game *game);
 * * * * * **/
 int		ft_get_pixel(t_img *img, int x, int y);
 void	ft_put_pixel(t_img *img, int x, int y, int color);
-void	ft_put_image(t_img *img, int x_offset, int y_offset, t_img *frame);
 t_img	*ft_open_image(void *mlx, char *name, int width, int height);
 void	ft_clear_frame(t_game *game);
 

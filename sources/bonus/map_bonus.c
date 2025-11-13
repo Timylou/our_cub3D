@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:11:11 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/11/04 12:41:45 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/13 11:31:03 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ft_switch_angle(char angle, int player_x, char *line, t_game *game)
 	else if (angle == 'S')
 		game->player->angle = PI / 2;
 	else if (angle == 'W')
-		game->player->angle = 2 * PI;
+		game->player->angle = PI;
 	game->player->x = player_x;
 	return (player_x);
 }

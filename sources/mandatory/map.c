@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mens <yel-mens@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:11:11 by yel-mens          #+#    #+#             */
-/*   Updated: 2025/10/22 23:01:10 by yel-mens         ###   ########.fr       */
+/*   Updated: 2025/11/13 11:30:49 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	ft_switch_angle(char angle, int player_x, char *line, t_game *game)
 	else if (angle == 'S')
 		game->player->angle = PI / 2;
 	else if (angle == 'W')
-		game->player->angle = 2 * PI;
+		game->player->angle = PI;
 	game->player->x = player_x;
 	return (player_x);
 }

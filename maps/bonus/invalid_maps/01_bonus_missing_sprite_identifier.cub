@@ -1,0 +1,18 @@
+NO ./textures/north.xpm
+SO ./textures/south.xpm
+WE ./textures/west.xpm
+EA ./textures/east.xpm
+
+SD ./textures/door.xpm
+S1 ./textures/torch1.xpm
+S3 ./textures/torch3.xpm
+S4 ./textures/torch4.xpm
+
+F 138,46,0
+C 0,0,50
+
+111111
+10A001
+10N001
+100001
+111111

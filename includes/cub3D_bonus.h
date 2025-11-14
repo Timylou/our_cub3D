@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 13:15:04 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/12 12:07:35 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/13 21:50:55 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,9 @@
 # define MINIMAP_SIZE 180
 # define MINIMAP_OFFSET 20
 # define ANIM_SPEED 100000
-# define TRANSPARENCY_COLOR 0x0
 # define MOUSE_SENSITIVITY 0.002
 # define ANGLE_SPEED 0.05
 # define SPEED 0.04
-
-typedef enum e_direction
-{
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT
-}			t_direction;
 
 typedef struct s_img	t_img;
 typedef struct s_game	t_game;

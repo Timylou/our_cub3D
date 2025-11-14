@@ -6,7 +6,7 @@
 /*   By: brturcio <brturcio@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:01:30 by brturcio          #+#    #+#             */
-/*   Updated: 2025/11/12 11:37:33 by brturcio         ###   ########.fr       */
+/*   Updated: 2025/11/13 20:08:59 by brturcio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,11 @@
 # include "libft.h"
 
 # define PI 3.14159265359
-# define BLOCK 10
 # define FOV_PLANE 0.66
 
 /* * * * * *
 *  structs *
 * * * * * **/
-
-typedef enum e_direction
-{
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT
-}			t_direction;
 
 typedef struct s_img	t_img;
 
